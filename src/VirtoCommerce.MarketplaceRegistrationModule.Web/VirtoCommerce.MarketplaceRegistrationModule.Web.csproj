@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Project is not a test project -->
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Core\VirtoCommerce.MarketplaceRegistrationModule.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data\VirtoCommerce.MarketplaceRegistrationModule.Data.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.csproj" />
+  </ItemGroup>
+</Project>

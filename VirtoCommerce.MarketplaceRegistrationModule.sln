@@ -1,0 +1,85 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Web", "src\VirtoCommerce.MarketplaceRegistrationModule.Web\VirtoCommerce.MarketplaceRegistrationModule.Web.csproj", "{A5B234AF-4579-4682-AD13-E3E24173122C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Data", "src\VirtoCommerce.MarketplaceRegistrationModule.Data\VirtoCommerce.MarketplaceRegistrationModule.Data.csproj", "{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Core", "src\VirtoCommerce.MarketplaceRegistrationModule.Core\VirtoCommerce.MarketplaceRegistrationModule.Core.csproj", "{EBF8C30F-A502-4FF1-9EB4-2280F79CE424}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Data.MySql", "src\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.csproj", "{C82E5CFE-0694-4016-B768-34182D65772A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql", "src\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.csproj", "{91621B8B-A905-4B61-ABDD-C4AF0BCE0104}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer", "src\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.csproj", "{C45C7E66-0C64-4DC2-81F7-B3581B91690A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9E8E610B-3054-46CE-A519-7FAE70F5D5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceRegistrationModule.Tests", "tests\VirtoCommerce.MarketplaceRegistrationModule.Tests\VirtoCommerce.MarketplaceRegistrationModule.Tests.csproj", "{C663CA12-B030-4705-89AC-073179069DBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF5548E0-6099-4739-83E6-B4A6350DD6AF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		module.ignore = module.ignore
+		README.md = README.md
+		VirtoCommerce.MarketplaceRegistrationModule.sln.DotSettings = VirtoCommerce.MarketplaceRegistrationModule.sln.DotSettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5B234AF-4579-4682-AD13-E3E24173122C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B234AF-4579-4682-AD13-E3E24173122C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B234AF-4579-4682-AD13-E3E24173122C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B234AF-4579-4682-AD13-E3E24173122C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF8C30F-A502-4FF1-9EB4-2280F79CE424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF8C30F-A502-4FF1-9EB4-2280F79CE424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF8C30F-A502-4FF1-9EB4-2280F79CE424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF8C30F-A502-4FF1-9EB4-2280F79CE424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82E5CFE-0694-4016-B768-34182D65772A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82E5CFE-0694-4016-B768-34182D65772A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82E5CFE-0694-4016-B768-34182D65772A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82E5CFE-0694-4016-B768-34182D65772A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91621B8B-A905-4B61-ABDD-C4AF0BCE0104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91621B8B-A905-4B61-ABDD-C4AF0BCE0104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91621B8B-A905-4B61-ABDD-C4AF0BCE0104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91621B8B-A905-4B61-ABDD-C4AF0BCE0104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C45C7E66-0C64-4DC2-81F7-B3581B91690A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C45C7E66-0C64-4DC2-81F7-B3581B91690A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C45C7E66-0C64-4DC2-81F7-B3581B91690A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C45C7E66-0C64-4DC2-81F7-B3581B91690A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C663CA12-B030-4705-89AC-073179069DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C663CA12-B030-4705-89AC-073179069DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C663CA12-B030-4705-89AC-073179069DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C663CA12-B030-4705-89AC-073179069DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A5B234AF-4579-4682-AD13-E3E24173122C} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{8528C5AE-6FD7-4A2E-9247-C74C8A6BB571} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{EBF8C30F-A502-4FF1-9EB4-2280F79CE424} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{C82E5CFE-0694-4016-B768-34182D65772A} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{91621B8B-A905-4B61-ABDD-C4AF0BCE0104} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{C45C7E66-0C64-4DC2-81F7-B3581B91690A} = {1CFCE1E1-442E-45B7-9AD7-E0A7A7A0681D}
+		{C663CA12-B030-4705-89AC-073179069DBD} = {9E8E610B-3054-46CE-A519-7FAE70F5D5EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C4F884B-6102-42B7-9750-D8681673EE7F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,36 @@
+{
+  "marketplaceRegistration": {
+    "main-menu-title": "Registration requests",
+    "blades": {
+      "registration-request-list": {
+        "title": "Registration requests",
+        "labels": {
+          "first-name": "First name",
+          "last-name": "Last name",
+          "organization-name": "Organization",
+          "contact-email": "Email",
+          "contact-phone": "Phone"
+        }
+      }
+    }
+  },
+  "permissions": {
+    "MarketplaceRegistrationModule:access": "Open MarketplaceRegistrationModule menu",
+    "MarketplaceRegistrationModule:create": "Create MarketplaceRegistrationModule related data",
+    "MarketplaceRegistrationModule:read": "View MarketplaceRegistrationModule related data",
+    "MarketplaceRegistrationModule:update": "Update MarketplaceRegistrationModule related data",
+    "MarketplaceRegistrationModule:delete": "Delete MarketplaceRegistrationModule related data"
+  },
+  "settings": {
+    "MarketplaceRegistrationModule": {
+      "MarketplaceRegistrationModuleEnabled": {
+        "title": "MarketplaceRegistrationModule Enabled",
+        "description": "MarketplaceRegistrationModule Enabled setting"
+      },
+      "MarketplaceRegistrationModulePassword": {
+        "title": "MarketplaceRegistrationModule Password",
+        "description": "MarketplaceRegistrationModule Password setting"
+      }
+    }
+  }
+}
