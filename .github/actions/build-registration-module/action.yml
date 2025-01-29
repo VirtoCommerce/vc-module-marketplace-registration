@@ -1,0 +1,17 @@
+# v2.0.0
+name: Build Registration Module
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Install dependencies for Registration Module
+      shell: bash
+      working-directory: src/VirtoCommerce.MarketplaceRegistrationModule.Web/vcmp-registration
+      run: yarn
+
+    - name: Build Registration Module
+      shell: bash
+      working-directory:  src/VirtoCommerce.MarketplaceRegistrationModule.Web/vcmp-registration
+      run: yarn build:modules-bundle
