@@ -3,5 +3,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
         return $resource('api/vcmp', null, {
             // registration request
             searchRegistrationRequests: { method: 'POST', url: 'api/vcmp/registrationrequest/search' },
+            createRegistrationRequests: { method: 'POST', url: 'api/vcmp/registrationrequest/new' },
+            updateRegistrationRequests: { method: 'POST', url: 'api/vcmp/registrationrequest/update' },
         });
     }]);

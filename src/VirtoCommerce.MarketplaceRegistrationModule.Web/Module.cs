@@ -6,11 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.MarketplaceRegistrationModule.Core;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
+using VirtoCommerce.MarketplaceRegistrationModule.Data.Handlers;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.MySql;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Repositories;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer;
+using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -49,6 +52,8 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<IRegistrationRepository, RegistrationRepository>();
         serviceCollection.AddTransient<Func<IRegistrationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IRegistrationRepository>());
 
+        serviceCollection.AddTransient<StateMachineTriggerEventHandler>();
+
         serviceCollection.AddTransient<IRegistrationRequestService, RegistrationRequestService>();
         serviceCollection.AddTransient<IRegistrationRequestCrudService, RegistrationRequestCrudService>();
         serviceCollection.AddTransient<IRegistrationRequestSearchService, RegistrationRequestSearchService>();
@@ -59,6 +64,9 @@ public class Module : IModule, IHasConfiguration
     public void PostInitialize(IApplicationBuilder appBuilder)
     {
         var serviceProvider = appBuilder.ApplicationServices;
+
+        // Register event handlers
+        appBuilder.RegisterEventHandler<StateMachineTriggerEvent, StateMachineTriggerEventHandler>();
 
         // Register settings
         var settingsRegistrar = serviceProvider.GetRequiredService<ISettingsRegistrar>();

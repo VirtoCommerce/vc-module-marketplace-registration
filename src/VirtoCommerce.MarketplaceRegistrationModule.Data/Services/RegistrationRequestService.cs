@@ -34,8 +34,6 @@ public class RegistrationRequestService : IRegistrationRequestService
         registrationRequest.ContactEmail = registrationRequestDetails.ContactEmail;
         registrationRequest.ContactPhone = registrationRequestDetails.ContactPhone;
 
-        await _registrationRequestCrudService.SaveChangesAsync([registrationRequest]);
-
         //Create state machine instance for registration request
         var customerOrderStateMachineDefinition = await _stateMachineDefinitionService.GetActiveStateMachineDefinitionAsync(ModuleConstants.StateMachineObjectType.RegistrationRequest);
         if (customerOrderStateMachineDefinition != null)
@@ -43,6 +41,8 @@ public class RegistrationRequestService : IRegistrationRequestService
             var stateMachineInstance = await _stateMachineInstanceService.CreateStateMachineInstanceAsync(customerOrderStateMachineDefinition.Id, null, registrationRequest);
             registrationRequest.Status = stateMachineInstance.CurrentStateName;
         }
+
+        await _registrationRequestCrudService.SaveChangesAsync([registrationRequest]);
 
         return registrationRequest;
     }

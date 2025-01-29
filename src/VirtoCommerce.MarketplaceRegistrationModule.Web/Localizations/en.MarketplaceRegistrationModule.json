@@ -9,8 +9,32 @@
           "last-name": "Last name",
           "organization-name": "Organization",
           "contact-email": "Email",
+          "contact-phone": "Phone",
+          "status": "Status"
+        }
+      },
+      "registration-request-details": {
+        "title": "Registration request",
+        "labels": {
+          "first-name": "First name",
+          "last-name": "Last name",
+          "organization-name": "Organization",
+          "contact-email": "Email",
           "contact-phone": "Phone"
         }
+      }
+    },
+    "state-trigger-actions": {
+      "AcceptRegistrationRequest": "Accept",
+      "ProcessRegistrationRequest": "Process",
+      "DeclineRegistrationRequest": "Decline",
+      "CompleteRegistrationRequest": "Complete"
+    },
+    "dialogs": {
+      "decline-request": {
+        "title": "Decline confirmation",
+        "message": "Are you sure you want to decline the registration request?",
+        "comment-placeholder": "Enter decline reason"
       }
     }
   },

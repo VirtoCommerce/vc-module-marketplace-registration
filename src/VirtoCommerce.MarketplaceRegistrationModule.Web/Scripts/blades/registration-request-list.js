@@ -1,5 +1,6 @@
 angular.module('virtoCommerce.marketplaceRegistrationModule')
-    .controller('virtoCommerce.marketplaceRegistrationModule.registrationRequestListController', ['$scope',
+    .controller('virtoCommerce.marketplaceRegistrationModule.registrationRequestListController',
+        ['$scope',
         'platformWebApp.bladeUtils', 'platformWebApp.bladeNavigationService',
         'platformWebApp.metaFormsService',
         'virtoCommerce.marketplaceRegistrationModule.webApi',
@@ -14,17 +15,8 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-list.title';
-            blade.userIds = [];
-            $scope.userName = '';
             $scope.hasMore = true;
             var filter = blade.filter = $scope.filter = {};
-            var notificationConversationId = undefined;
-            var notificationMessageId = undefined;
-            if (blade.notification) {
-                notificationConversationId = blade.notification.conversationId;
-                notificationMessageId = blade.notification.messageId;
-                blade.notification = null;
-            }
 
             blade.refresh = function (needRefreshChildBlade) {
                 blade.isLoading = true;
@@ -46,10 +38,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
 
                         if (data.results) {
                             $scope.listEntries = data.results;
-                            if (notificationConversationId) {
-                                blade.selectedItem = $scope.listEntries.filter(x => x.id === notificationConversationId).find(o => true);
-                            }
-                            else if ($scope.selectedNodeId) {
+                            if ($scope.selectedNodeId) {
                                 blade.selectedItem = $scope.listEntries.filter(x => x.id === $scope.selectedNodeId).find(o => true);
                             }
                         }
@@ -64,9 +53,6 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                                     blade.childBlade.refresh();
                                 };
                             }
-                        }
-                        else if (notificationConversationId) {
-                            $scope.showDetails(blade.selectedItem, notificationMessageId);
                         }
                     });
 
@@ -95,26 +81,6 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                 //}
             ];
 
-            $scope.manageConversation = function (listItem) {
-                $scope.selectedNodeId = listItem.id;
-                blade.selectedItem = listItem;
-
-                var conversationTemplate = metaFormsService.getMetaFields('Conversation');
-                var newBlade = {
-                    id: 'conversationManage',
-                    title: listItem.name,
-                    entityId: listItem.entityId,
-                    entityType: listItem.entityType,
-                    conversationId: listItem.id,
-                    //conversation: listItem,
-                    controller: 'virtoCommerce.marketplaceCommunicationModule.conversationDetailsController',
-                    template: 'Modules/$(VirtoCommerce.MarketplaceCommunication)/Scripts/blades/conversation-details.tpl.html',
-                    metaFields: conversationTemplate
-                };
-                blade.childBlade = newBlade;
-                bladeNavigationService.showBlade(newBlade, blade);
-            }
-
             var setSelectedItem = function (listItem) {
                 $scope.selectedNodeId = listItem.id;
                 blade.selectedItem = listItem;
@@ -123,20 +89,17 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             $scope.selectItem = function (e, listItem) {
                 setSelectedItem(listItem);
 
-                //$scope.showDetails(listItem);
+                $scope.showDetails(listItem);
             }
 
-            $scope.showDetails = function (listItem, exactlyMessageId) {
+            $scope.showDetails = function (listItem) {
+                var conversationTemplate = metaFormsService.getMetaFields('RegistrationRequest');
                 var newBlade = {
-                    id: 'conversationCommunication',
-                    title: listItem.name,
-                    entityId: listItem.entityId,
-                    entityType: listItem.entityType,
-                    conversationId: listItem.id,
-                    conversation: listItem,
-                    exactlyMessageId: exactlyMessageId,
-                    controller: 'virtoCommerce.marketplaceCommunicationModule.messageListController',
-                    template: 'Modules/$(VirtoCommerce.MarketplaceCommunication)/Scripts/blades/message-list.tpl.html'
+                    id: 'registrationRequest',
+                    currentEntity: listItem,
+                    controller: 'virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
+                    template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-details.tpl.html',
+                    metaFields: conversationTemplate
                 };
                 blade.childBlade = newBlade;
                 bladeNavigationService.showBlade(newBlade, blade);
@@ -167,8 +130,6 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                 var searchCriteria = {
                     //sort: uiGridHelper.getSortExpression($scope),
                     keyword: filter.keyword,
-                    userIds: blade.userIds,
-                    responseGroup: 'Full',
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount
                 };
@@ -184,10 +145,9 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
 
                     var searchCriteria = getSearchCriteria();
 
-                    communicationApi.searchConversations(
+                    registrationApi.searchRegistrationRequests(
                         searchCriteria,
                         function (data) {
-                            //transformByFilters(data.results);
                             blade.isLoading = false;
                             $scope.pageSettings.totalItems = data.totalCount;
                             $scope.listEntries = $scope.listEntries.concat(data.results);

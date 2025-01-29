@@ -37,11 +37,20 @@ public class VcmpRegistrationRequestController : ControllerBase
     [HttpPost]
     [Route("new")]
     [Authorize(Core.ModuleConstants.Security.Permissions.Create)]
-    public async Task<ActionResult<RegistrationRequest>> CreateConversation([FromBody] CreateRegistrationRequestCommand command)
+    public async Task<ActionResult<RegistrationRequest>> CreateRegistrationRequest([FromBody] CreateRegistrationRequestCommand command)
     {
         var result = await _mediator.Send(command);
 
         return Ok(result);
     }
 
+    [HttpPost]
+    [Route("update")]
+    [Authorize(Core.ModuleConstants.Security.Permissions.Update)]
+    public async Task<ActionResult<RegistrationRequest>> UpdateRegistrationRequest([FromBody] UpdateRegistrationRequestCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        return Ok(result);
+    }
 }

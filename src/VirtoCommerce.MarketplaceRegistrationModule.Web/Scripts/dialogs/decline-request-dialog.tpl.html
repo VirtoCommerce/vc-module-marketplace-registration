@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{ 'marketplaceRegistration.dialogs.decline-request.title' | translate }}</h3>
+</div>
+<div class="modal-body">
+  <p>{{ 'marketplaceRegistration.dialogs.decline-request.message' | translate }}</p>
+    
+    <div class="form-group">
+        <div class="form-input">
+            <textarea class="form-control" cols="30" rows="3" ng-model="comment.text" placeholder="{{ 'marketplaceRegistration.dialogs.decline-request.comment-placeholder' | translate }}"></textarea>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="yes()">{{ 'platform.commands.confirm' | translate }}</button>
+    <button class="btn" ng-click="cancel()">{{ 'platform.commands.cancel' | translate }}</button>
+</div>
