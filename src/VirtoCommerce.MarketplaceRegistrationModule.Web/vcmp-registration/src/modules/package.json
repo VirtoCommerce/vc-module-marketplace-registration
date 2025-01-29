@@ -1,0 +1,11 @@
+{
+  "name": "@vcmp-registration/modules",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "dependencies": {
+    "@vcmp-registration/api": "1.0.0",
+    "vue": "^3.4.19"
+  }
+}

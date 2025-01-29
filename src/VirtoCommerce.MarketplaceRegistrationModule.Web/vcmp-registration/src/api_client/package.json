@@ -1,0 +1,13 @@
+{
+  "name": "@vcmp-registration/api",
+  "version": "1.0.0",
+  "files": [
+    "package.json"
+  ],
+  "exports": {
+    "./marketplaceregistration": {
+      "import": "./virtocommerce.marketplaceregistration.js",
+      "types": "./types/virtocommerce.marketplaceregistration.js"
+    }
+  }
+}

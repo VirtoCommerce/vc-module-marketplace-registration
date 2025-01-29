@@ -1,0 +1,35 @@
+{
+  "VCMP_VENDOR_REGISTRATION": {
+    "TITLE": "Vendor Registration",
+    "LABELS": {
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "ORGANIZATION": "Organization name",
+      "EMAIL": "Contact e-mail",
+      "PHONE": "Contact phone",
+      "DOCUMENTS": "Legal documents"
+    },
+    "PLACEHOLDERS": {
+      "FIRST_NAME": "Enter your first name",
+      "LAST_NAME": "Enter your last name",
+      "ORGANIZATION": "Enter organization name",
+      "EMAIL": "Enter contact email",
+      "PHONE": "Enter contact phone"
+    },
+    "HINTS": {
+      "EMAIL": "Will be used to create owner contact and account"
+    },
+    "SUBMIT": "Submit",
+    "SUCCESS": "Registration request has been successfully submitted",
+    "VALIDATION": {
+      "PHONE_INVALID": "Please enter a valid phone number",
+      "PARSING_ERROR": "Error parsing response"
+    },
+    "ERRORS": {
+      "DEFAULT_ERROR": "An error occurred during registration",
+      "PARSING_ERROR": "Error parsing server response",
+      "REGISTRATION_REQUEST_ALREADY_EXISTS": "Registration request already exists",
+      "REGISTRATION_ERROR": "Registration error: "
+    }
+  }
+}
