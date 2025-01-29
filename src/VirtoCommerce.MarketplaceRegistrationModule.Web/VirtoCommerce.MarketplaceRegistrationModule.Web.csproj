@@ -8,6 +8,12 @@
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="vcmp-registration\**" />
+    <Content Remove="vcmp-registration\**" />
+    <EmbeddedResource Remove="vcmp-registration\**" />
+    <None Remove="vcmp-registration\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -17,4 +23,10 @@
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql\VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.csproj" />
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer\VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <RegistrationApp Include="vcmp-registration\dist\**" />
+  </ItemGroup>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(RegistrationApp)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
 </Project>
