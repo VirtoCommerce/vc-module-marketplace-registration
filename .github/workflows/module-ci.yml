@@ -95,8 +95,11 @@ jobs:
       - name: Build Registration Module
         uses: ./.github/actions/build-registration-module
 
+      - name: Restore
+        run: dotnet restore
+        
       - name: Build
-        run: vc-build Compile
+        run: vc-build Compile -skip restore
 
       - name: Unit Tests
         run: vc-build Test -skip
