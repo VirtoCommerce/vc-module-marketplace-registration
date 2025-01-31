@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,15 @@ public class VcmpRegistrationRequestController : ControllerBase
     [Route("search")]
     [Authorize(Core.ModuleConstants.Security.Permissions.Read)]
     public async Task<ActionResult<SearchRegistrationRequestResult>> Search([FromBody] SearchRegistrationRequestQuery query)
+    {
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [Route("validate")]
+    public async Task<ActionResult<ValidationFailure[]>> ValidateRegistrationRequest([FromBody] ValidateRegistrationRequestQuery query)
     {
         var result = await _mediator.Send(query);
 

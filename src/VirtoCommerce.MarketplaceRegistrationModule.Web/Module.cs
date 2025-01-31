@@ -12,6 +12,7 @@ using VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Repositories;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer;
+using VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
 using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -53,6 +54,8 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<Func<IRegistrationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IRegistrationRepository>());
 
         serviceCollection.AddTransient<StateMachineTriggerEventHandler>();
+
+        serviceCollection.AddTransient<RegistrationRequestValidatorBase, RegistrationRequestValidator>();
 
         serviceCollection.AddTransient<IRegistrationRequestService, RegistrationRequestService>();
         serviceCollection.AddTransient<IRegistrationRequestCrudService, RegistrationRequestCrudService>();

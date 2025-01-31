@@ -40,6 +40,16 @@ public class RegistrationRequestSearchService : SearchService<SearchRegistration
             || x.ContactPhone.Contains(criteria.Keyword));
         }
 
+        if (!string.IsNullOrEmpty(criteria.ContactEmail))
+        {
+            query = query.Where(x => x.ContactEmail == criteria.ContactEmail);
+        }
+
+        if (!criteria.Statuses.IsNullOrEmpty())
+        {
+            query = query.Where(x => criteria.Statuses.Contains(x.Status));
+        }
+
         return query;
     }
 
