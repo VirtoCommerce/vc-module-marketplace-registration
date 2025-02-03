@@ -74,6 +74,14 @@ angular.module(moduleName, [])
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.contact-phone',
                         valueType: 'ShortText'
                     },
+                    {
+                        name: 'declineReason',
+                        title: 'marketplaceRegistration.blades.registration-request-details.labels.decline-reason',
+                        valueType: 'ShortText',
+                        isVisibleFn: function (blade) {
+                            return blade.currentEntity.status == 'Declined'
+                        }
+                    },
                 ]
             );
 

@@ -20,7 +20,8 @@
           "last-name": "Last name",
           "organization-name": "Organization",
           "contact-email": "Email",
-          "contact-phone": "Phone"
+          "contact-phone": "Phone",
+          "decline-reason": "Decline reason"
         }
       }
     },
