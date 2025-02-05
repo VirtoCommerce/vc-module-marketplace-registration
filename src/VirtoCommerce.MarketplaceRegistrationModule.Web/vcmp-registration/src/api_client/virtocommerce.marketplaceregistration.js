@@ -112,6 +112,57 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
      * @param body (optional)
      * @return OK
      */
+    validateRegistrationRequest(body) {
+        let url_ = this.baseUrl + "/api/vcmp/registrationrequest/validate";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            }
+        };
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response) => {
+            return this.processValidateRegistrationRequest(_response);
+        });
+    }
+    processValidateRegistrationRequest(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v, k) => _headers[k] = v);
+        }
+        ;
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+                let result200 = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                if (Array.isArray(resultData200)) {
+                    result200 = [];
+                    for (let item of resultData200)
+                        result200.push(ValidationFailure.fromJS(item));
+                }
+                else {
+                    result200 = null;
+                }
+                return result200;
+            });
+        }
+        else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * @param body (optional)
+     * @return OK
+     */
     createRegistrationRequest(body) {
         let url_ = this.baseUrl + "/api/vcmp/registrationrequest/new";
         url_ = url_.replace(/[?&]$/, "");
@@ -143,16 +194,6 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = RegistrationRequest.fromJS(resultData200);
                 return result200;
-            });
-        }
-        else if (status === 401) {
-            return response.text().then((_responseText) => {
-                return throwException("Unauthorized", status, _responseText, _headers);
-            });
-        }
-        else if (status === 403) {
-            return response.text().then((_responseText) => {
-                return throwException("Forbidden", status, _responseText, _headers);
             });
         }
         else if (status !== 200 && status !== 204) {
@@ -743,6 +784,18 @@ export class RegistrationRequest {
 }
 export class SearchRegistrationRequestQuery {
     constructor(data) {
+        Object.defineProperty(this, "contactEmail", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "statuses", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
         Object.defineProperty(this, "responseGroup", {
             enumerable: true,
             configurable: true,
@@ -818,6 +871,12 @@ export class SearchRegistrationRequestQuery {
     }
     init(_data) {
         if (_data) {
+            this.contactEmail = _data["contactEmail"];
+            if (Array.isArray(_data["statuses"])) {
+                this.statuses = [];
+                for (let item of _data["statuses"])
+                    this.statuses.push(item);
+            }
             this.responseGroup = _data["responseGroup"];
             this.objectType = _data["objectType"];
             if (Array.isArray(_data["objectTypes"])) {
@@ -851,6 +910,12 @@ export class SearchRegistrationRequestQuery {
     }
     toJSON(data) {
         data = typeof data === 'object' ? data : {};
+        data["contactEmail"] = this.contactEmail;
+        if (Array.isArray(this.statuses)) {
+            data["statuses"] = [];
+            for (let item of this.statuses)
+                data["statuses"].push(item);
+        }
         data["responseGroup"] = this.responseGroup;
         data["objectType"] = this.objectType;
         if (Array.isArray(this.objectTypes)) {
@@ -925,6 +990,12 @@ export class SearchRegistrationRequestResult {
         return data;
     }
 }
+export var Severity;
+(function (Severity) {
+    Severity["Error"] = "Error";
+    Severity["Warning"] = "Warning";
+    Severity["Info"] = "Info";
+})(Severity || (Severity = {}));
 export var SortDirection;
 (function (SortDirection) {
     SortDirection["Ascending"] = "Ascending";
@@ -1010,6 +1081,130 @@ export class UpdateRegistrationRequestCommand {
         return data;
     }
 }
+export class ValidateRegistrationRequestQuery {
+    constructor(data) {
+        Object.defineProperty(this, "registrationRequest", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    init(_data) {
+        if (_data) {
+            this.registrationRequest = _data["registrationRequest"] ? RegistrationRequest.fromJS(_data["registrationRequest"]) : undefined;
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new ValidateRegistrationRequestQuery();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        data["registrationRequest"] = this.registrationRequest ? this.registrationRequest.toJSON() : undefined;
+        return data;
+    }
+}
+export class ValidationFailure {
+    constructor(data) {
+        Object.defineProperty(this, "propertyName", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "errorMessage", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "attemptedValue", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "customState", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "severity", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "errorCode", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "formattedMessagePlaceholderValues", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    init(_data) {
+        if (_data) {
+            this.propertyName = _data["propertyName"];
+            this.errorMessage = _data["errorMessage"];
+            this.attemptedValue = _data["attemptedValue"];
+            this.customState = _data["customState"];
+            this.severity = _data["severity"];
+            this.errorCode = _data["errorCode"];
+            if (_data["formattedMessagePlaceholderValues"]) {
+                this.formattedMessagePlaceholderValues = {};
+                for (let key in _data["formattedMessagePlaceholderValues"]) {
+                    if (_data["formattedMessagePlaceholderValues"].hasOwnProperty(key))
+                        this.formattedMessagePlaceholderValues[key] = _data["formattedMessagePlaceholderValues"][key];
+                }
+            }
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new ValidationFailure();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        data["propertyName"] = this.propertyName;
+        data["errorMessage"] = this.errorMessage;
+        data["attemptedValue"] = this.attemptedValue;
+        data["customState"] = this.customState;
+        data["severity"] = this.severity;
+        data["errorCode"] = this.errorCode;
+        if (this.formattedMessagePlaceholderValues) {
+            data["formattedMessagePlaceholderValues"] = {};
+            for (let key in this.formattedMessagePlaceholderValues) {
+                if (this.formattedMessagePlaceholderValues.hasOwnProperty(key))
+                    data["formattedMessagePlaceholderValues"][key] = this.formattedMessagePlaceholderValues[key];
+            }
+        }
+        return data;
+    }
+}
 export var DynamicObjectPropertyValueType;
 (function (DynamicObjectPropertyValueType) {
     DynamicObjectPropertyValueType["Undefined"] = "Undefined";
@@ -1039,6 +1234,12 @@ export var SortInfoSortDirection;
     SortInfoSortDirection["Ascending"] = "Ascending";
     SortInfoSortDirection["Descending"] = "Descending";
 })(SortInfoSortDirection || (SortInfoSortDirection = {}));
+export var ValidationFailureSeverity;
+(function (ValidationFailureSeverity) {
+    ValidationFailureSeverity["Error"] = "Error";
+    ValidationFailureSeverity["Warning"] = "Warning";
+    ValidationFailureSeverity["Info"] = "Info";
+})(ValidationFailureSeverity || (ValidationFailureSeverity = {}));
 export class ApiException extends Error {
     constructor(message, status, response, headers, result) {
         super();

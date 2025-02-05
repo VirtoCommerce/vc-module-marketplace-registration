@@ -22,6 +22,12 @@ export declare class VcmpRegistrationRequestClient extends AuthApiBase {
      * @param body (optional)
      * @return OK
      */
+    validateRegistrationRequest(body?: ValidateRegistrationRequestQuery | undefined): Promise<ValidationFailure[]>;
+    protected processValidateRegistrationRequest(response: Response): Promise<ValidationFailure[]>;
+    /**
+     * @param body (optional)
+     * @return OK
+     */
     createRegistrationRequest(body?: CreateRegistrationRequestCommand | undefined): Promise<RegistrationRequest>;
     protected processCreateRegistrationRequest(response: Response): Promise<RegistrationRequest>;
     /**
@@ -175,6 +181,8 @@ export interface IRegistrationRequest {
     id?: string | undefined;
 }
 export declare class SearchRegistrationRequestQuery implements ISearchRegistrationRequestQuery {
+    contactEmail?: string | undefined;
+    statuses?: string[] | undefined;
     responseGroup?: string | undefined;
     objectType?: string | undefined;
     objectTypes?: string[] | undefined;
@@ -192,6 +200,8 @@ export declare class SearchRegistrationRequestQuery implements ISearchRegistrati
     toJSON(data?: any): any;
 }
 export interface ISearchRegistrationRequestQuery {
+    contactEmail?: string | undefined;
+    statuses?: string[] | undefined;
     responseGroup?: string | undefined;
     objectType?: string | undefined;
     objectTypes?: string[] | undefined;
@@ -215,6 +225,11 @@ export declare class SearchRegistrationRequestResult implements ISearchRegistrat
 export interface ISearchRegistrationRequestResult {
     totalCount?: number;
     results?: RegistrationRequest[] | undefined;
+}
+export declare enum Severity {
+    Error = "Error",
+    Warning = "Warning",
+    Info = "Info"
 }
 export declare enum SortDirection {
     Ascending = "Ascending",
@@ -244,6 +259,42 @@ export interface IUpdateRegistrationRequestCommand {
     id: string;
     comment?: string | undefined;
 }
+export declare class ValidateRegistrationRequestQuery implements IValidateRegistrationRequestQuery {
+    registrationRequest?: RegistrationRequest | undefined;
+    constructor(data?: IValidateRegistrationRequestQuery);
+    init(_data?: any): void;
+    static fromJS(data: any): ValidateRegistrationRequestQuery;
+    toJSON(data?: any): any;
+}
+export interface IValidateRegistrationRequestQuery {
+    registrationRequest?: RegistrationRequest | undefined;
+}
+export declare class ValidationFailure implements IValidationFailure {
+    propertyName?: string | undefined;
+    errorMessage?: string | undefined;
+    attemptedValue?: any | undefined;
+    customState?: any | undefined;
+    severity?: ValidationFailureSeverity;
+    errorCode?: string | undefined;
+    formattedMessagePlaceholderValues?: {
+        [key: string]: any;
+    } | undefined;
+    constructor(data?: IValidationFailure);
+    init(_data?: any): void;
+    static fromJS(data: any): ValidationFailure;
+    toJSON(data?: any): any;
+}
+export interface IValidationFailure {
+    propertyName?: string | undefined;
+    errorMessage?: string | undefined;
+    attemptedValue?: any | undefined;
+    customState?: any | undefined;
+    severity?: ValidationFailureSeverity;
+    errorCode?: string | undefined;
+    formattedMessagePlaceholderValues?: {
+        [key: string]: any;
+    } | undefined;
+}
 export declare enum DynamicObjectPropertyValueType {
     Undefined = "Undefined",
     ShortText = "ShortText",
@@ -269,6 +320,11 @@ export declare enum DynamicPropertyObjectValueValueType {
 export declare enum SortInfoSortDirection {
     Ascending = "Ascending",
     Descending = "Descending"
+}
+export declare enum ValidationFailureSeverity {
+    Error = "Error",
+    Warning = "Warning",
+    Info = "Info"
 }
 export declare class ApiException extends Error {
     message: string;

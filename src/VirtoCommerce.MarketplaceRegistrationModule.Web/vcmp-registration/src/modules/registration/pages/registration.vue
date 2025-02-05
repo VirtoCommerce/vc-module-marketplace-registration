@@ -29,20 +29,28 @@
             :error="!!errors.length"
             :error-message="errorMessage"
             :required="field.required"
+            :loading="field.name === 'contactEmail' && validateEmailLoading"
             v-bind="field.props || {}"
-            @update:model-value="handleChange"
+            @update:model-value="
+              (value) => {
+                handleChange(value);
+                updateFormData(field.name, value);
+              }
+            "
           />
         </Field>
       </template>
 
-      <VcButton
-        type="submit"
-        :loading="registrationLoading"
-        :disabled="registrationLoading || !isValid"
-        @click="onSubmit"
-      >
-        {{ $t("VCMP_VENDOR_REGISTRATION.SUBMIT") }}
-      </VcButton>
+      <div class="registration-form__button">
+        <VcButton
+          type="submit"
+          :loading="registrationLoading"
+          :disabled="registrationLoading || !isValid"
+          @click="onSubmit"
+        >
+          {{ $t("VCMP_VENDOR_REGISTRATION.SUBMIT") }}
+        </VcButton>
+      </div>
 
       <VcHint
         v-if="!!registerResult.error"
@@ -52,7 +60,7 @@
       </VcHint>
     </VcForm>
     <div v-else>
-      <p>{{ $t("VCMP_VENDOR_REGISTRATION.SUCCESS") }}</p>
+      <p class="registration-form__success">{{ $t("VCMP_VENDOR_REGISTRATION.SUCCESS") }}</p>
     </div>
   </VcLoginForm>
 </template>
@@ -61,10 +69,9 @@
 import { useSettings } from "@vc-shell/framework";
 import { Field, useForm, useIsFormValid, defineRule } from "vee-validate";
 import { computed, ref } from "vue";
-import { useRegistration } from "../composables";
+import { useRegistration, useRegistrationForm } from "../composables";
 import { ICreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
-import { useRegistrationForm } from "../composables/useRegistrationForm";
 
 export interface Props {
   logo: string;
@@ -87,18 +94,16 @@ const registerResult = ref({
 
 const { t } = useI18n({ useScope: "global" });
 
-const { register, loading: registrationLoading } = useRegistration();
+const { register, loading: registrationLoading, validateEmail, validateEmailLoading } = useRegistration();
 
-const { formConfig } = useRegistrationForm();
-
-const formData = ref<Record<string, unknown>>({});
-
-formConfig.value.fields.forEach((field) => {
-  formData.value[field.name] = "";
-});
+const { formConfig, formData, updateFormData, clearFormData } = useRegistrationForm();
 
 defineRule("phone", (value: string) => {
-  const phonePattern = /^\+?[1-9]\d{1,14}$/;
+  const phonePattern = /^\+?[0-9]\d{1,14}$/;
+
+  if (value === "") {
+    return true;
+  }
 
   if (!phonePattern.test(value)) {
     return t("VCMP_VENDOR_REGISTRATION.VALIDATION.PHONE_INVALID");
@@ -107,8 +112,41 @@ defineRule("phone", (value: string) => {
   return true;
 });
 
+defineRule("emailWithServerValidation", async (value: string) => {
+  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+  if (!value) {
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_REQUIRED");
+  }
+
+  if (!emailPattern.test(value)) {
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_INVALID");
+  }
+
+  try {
+    const result = await validateEmail(formData.value);
+
+    const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
+
+    if (
+      mailValidationError &&
+      (mailValidationError.errorCode === "SELLER_EMAIL_ALREADY_EXISTS" ||
+        mailValidationError.errorCode === "REQUEST_EMAIL_ALREADY_EXISTS")
+    ) {
+      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_ALREADY_EXISTS");
+    }
+  } catch (error) {
+    console.error("Email validation error:", error);
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR");
+  }
+
+  return true;
+});
+
 const onSubmit = async () => {
   const { valid } = await validate();
+
+  console.log(formData.value);
 
   if (valid) {
     try {
@@ -116,7 +154,7 @@ const onSubmit = async () => {
 
       registerResult.value.isSuccess = true;
 
-      formData.value = {};
+      clearFormData();
     } catch (error) {
       try {
         const parsedError = JSON.parse(JSON.stringify(error));
@@ -149,6 +187,15 @@ const customization = computed(() => {
 
   &__error {
     color: var(--registration-form-error-color) !important;
+  }
+
+  &__success {
+    white-space: pre-wrap;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

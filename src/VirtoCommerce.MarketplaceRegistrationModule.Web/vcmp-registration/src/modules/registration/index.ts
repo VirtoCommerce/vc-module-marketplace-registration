@@ -3,6 +3,8 @@ import { i18n } from "@vc-shell/framework";
 import { Router } from "vue-router";
 import { App } from "vue";
 import { routes } from "./router";
+import { useRegistrationForm } from "./composables/useRegistrationForm";
+import { RegistrationButton } from "./components";
 
 export default {
   install(app: App, options?: { router: Router }) {
@@ -23,5 +25,13 @@ export default {
         i18n.global.mergeLocaleMessage(key, message);
       });
     }
+  },
+  extensions: {
+    inbound: {
+      "registration-form": useRegistrationForm(),
+    },
+    outbound: {
+      "login-after-form": [{ id: "RegistrationButton", component: RegistrationButton }],
+    },
   },
 };

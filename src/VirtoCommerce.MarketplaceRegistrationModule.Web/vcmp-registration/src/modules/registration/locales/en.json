@@ -20,10 +20,14 @@
       "EMAIL": "Will be used to create owner contact and account"
     },
     "SUBMIT": "Submit",
-    "SUCCESS": "Registration request has been successfully submitted",
+    "SUCCESS": "Your request has been submitted successfully. \nWe are processing it. You will get an e-mail with your vendor account activation link shortly",
     "VALIDATION": {
       "PHONE_INVALID": "Please enter a valid phone number",
-      "PARSING_ERROR": "Error parsing response"
+      "PARSING_ERROR": "Error parsing response",
+      "EMAIL_REQUIRED": "Email is required",
+      "EMAIL_INVALID": "Invalid email format",
+      "EMAIL_ALREADY_EXISTS": "The e-mail already used in the system",
+      "EMAIL_VALIDATION_ERROR": "Email validation error"
     },
     "ERRORS": {
       "DEFAULT_ERROR": "An error occurred during registration",

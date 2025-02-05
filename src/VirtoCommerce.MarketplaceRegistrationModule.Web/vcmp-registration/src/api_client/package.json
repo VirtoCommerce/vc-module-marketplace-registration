@@ -7,7 +7,7 @@
   "exports": {
     "./marketplaceregistration": {
       "import": "./virtocommerce.marketplaceregistration.js",
-      "types": "./types/virtocommerce.marketplaceregistration.js"
+      "types": "./types/virtocommerce.marketplaceregistration.d.ts"
     }
   }
 }

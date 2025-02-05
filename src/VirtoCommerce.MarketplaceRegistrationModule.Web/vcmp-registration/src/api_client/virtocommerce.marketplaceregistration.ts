@@ -42,7 +42,7 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return OK
      */
     search(body?: SearchRegistrationRequestQuery | undefined): Promise<SearchRegistrationRequestResult> {
@@ -94,7 +94,58 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
+     * @return OK
+     */
+    validateRegistrationRequest(body?: ValidateRegistrationRequestQuery | undefined): Promise<ValidationFailure[]> {
+        let url_ = this.baseUrl + "/api/vcmp/registrationrequest/validate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processValidateRegistrationRequest(_response);
+        });
+    }
+
+    protected processValidateRegistrationRequest(response: Response): Promise<ValidationFailure[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ValidationFailure.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ValidationFailure[]>(null as any);
+    }
+
+    /**
+     * @param body (optional)
      * @return OK
      */
     createRegistrationRequest(body?: CreateRegistrationRequestCommand | undefined): Promise<RegistrationRequest> {
@@ -129,14 +180,6 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
             result200 = RegistrationRequest.fromJS(resultData200);
             return result200;
             });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            return throwException("Unauthorized", status, _responseText, _headers);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            return throwException("Forbidden", status, _responseText, _headers);
-            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -146,7 +189,7 @@ export class VcmpRegistrationRequestClient extends AuthApiBase {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return OK
      */
     updateRegistrationRequest(body?: UpdateRegistrationRequestCommand | undefined): Promise<RegistrationRequest> {
@@ -579,6 +622,8 @@ export interface IRegistrationRequest {
 }
 
 export class SearchRegistrationRequestQuery implements ISearchRegistrationRequestQuery {
+    contactEmail?: string | undefined;
+    statuses?: string[] | undefined;
     responseGroup?: string | undefined;
     objectType?: string | undefined;
     objectTypes?: string[] | undefined;
@@ -602,6 +647,12 @@ export class SearchRegistrationRequestQuery implements ISearchRegistrationReques
 
     init(_data?: any) {
         if (_data) {
+            this.contactEmail = _data["contactEmail"];
+            if (Array.isArray(_data["statuses"])) {
+                this.statuses = [] as any;
+                for (let item of _data["statuses"])
+                    this.statuses!.push(item);
+            }
             this.responseGroup = _data["responseGroup"];
             this.objectType = _data["objectType"];
             if (Array.isArray(_data["objectTypes"])) {
@@ -637,6 +688,12 @@ export class SearchRegistrationRequestQuery implements ISearchRegistrationReques
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["contactEmail"] = this.contactEmail;
+        if (Array.isArray(this.statuses)) {
+            data["statuses"] = [];
+            for (let item of this.statuses)
+                data["statuses"].push(item);
+        }
         data["responseGroup"] = this.responseGroup;
         data["objectType"] = this.objectType;
         if (Array.isArray(this.objectTypes)) {
@@ -665,6 +722,8 @@ export class SearchRegistrationRequestQuery implements ISearchRegistrationReques
 }
 
 export interface ISearchRegistrationRequestQuery {
+    contactEmail?: string | undefined;
+    statuses?: string[] | undefined;
     responseGroup?: string | undefined;
     objectType?: string | undefined;
     objectTypes?: string[] | undefined;
@@ -724,6 +783,12 @@ export class SearchRegistrationRequestResult implements ISearchRegistrationReque
 export interface ISearchRegistrationRequestResult {
     totalCount?: number;
     results?: RegistrationRequest[] | undefined;
+}
+
+export enum Severity {
+    Error = "Error",
+    Warning = "Warning",
+    Info = "Info",
 }
 
 export enum SortDirection {
@@ -811,6 +876,114 @@ export interface IUpdateRegistrationRequestCommand {
     comment?: string | undefined;
 }
 
+export class ValidateRegistrationRequestQuery implements IValidateRegistrationRequestQuery {
+    registrationRequest?: RegistrationRequest | undefined;
+
+    constructor(data?: IValidateRegistrationRequestQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.registrationRequest = _data["registrationRequest"] ? RegistrationRequest.fromJS(_data["registrationRequest"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ValidateRegistrationRequestQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new ValidateRegistrationRequestQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["registrationRequest"] = this.registrationRequest ? this.registrationRequest.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IValidateRegistrationRequestQuery {
+    registrationRequest?: RegistrationRequest | undefined;
+}
+
+export class ValidationFailure implements IValidationFailure {
+    propertyName?: string | undefined;
+    errorMessage?: string | undefined;
+    attemptedValue?: any | undefined;
+    customState?: any | undefined;
+    severity?: ValidationFailureSeverity;
+    errorCode?: string | undefined;
+    formattedMessagePlaceholderValues?: { [key: string]: any; } | undefined;
+
+    constructor(data?: IValidationFailure) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.propertyName = _data["propertyName"];
+            this.errorMessage = _data["errorMessage"];
+            this.attemptedValue = _data["attemptedValue"];
+            this.customState = _data["customState"];
+            this.severity = _data["severity"];
+            this.errorCode = _data["errorCode"];
+            if (_data["formattedMessagePlaceholderValues"]) {
+                this.formattedMessagePlaceholderValues = {} as any;
+                for (let key in _data["formattedMessagePlaceholderValues"]) {
+                    if (_data["formattedMessagePlaceholderValues"].hasOwnProperty(key))
+                        (<any>this.formattedMessagePlaceholderValues)![key] = _data["formattedMessagePlaceholderValues"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): ValidationFailure {
+        data = typeof data === 'object' ? data : {};
+        let result = new ValidationFailure();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["propertyName"] = this.propertyName;
+        data["errorMessage"] = this.errorMessage;
+        data["attemptedValue"] = this.attemptedValue;
+        data["customState"] = this.customState;
+        data["severity"] = this.severity;
+        data["errorCode"] = this.errorCode;
+        if (this.formattedMessagePlaceholderValues) {
+            data["formattedMessagePlaceholderValues"] = {};
+            for (let key in this.formattedMessagePlaceholderValues) {
+                if (this.formattedMessagePlaceholderValues.hasOwnProperty(key))
+                    (<any>data["formattedMessagePlaceholderValues"])[key] = (<any>this.formattedMessagePlaceholderValues)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IValidationFailure {
+    propertyName?: string | undefined;
+    errorMessage?: string | undefined;
+    attemptedValue?: any | undefined;
+    customState?: any | undefined;
+    severity?: ValidationFailureSeverity;
+    errorCode?: string | undefined;
+    formattedMessagePlaceholderValues?: { [key: string]: any; } | undefined;
+}
+
 export enum DynamicObjectPropertyValueType {
     Undefined = "Undefined",
     ShortText = "ShortText",
@@ -838,6 +1011,12 @@ export enum DynamicPropertyObjectValueValueType {
 export enum SortInfoSortDirection {
     Ascending = "Ascending",
     Descending = "Descending",
+}
+
+export enum ValidationFailureSeverity {
+    Error = "Error",
+    Warning = "Warning",
+    Info = "Info",
 }
 
 export class ApiException extends Error {
