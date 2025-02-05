@@ -1,13 +1,11 @@
 angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.registrationRequestListController',
-        ['$scope',
+        ['$scope', '$localStorage',
         'platformWebApp.bladeUtils', 'platformWebApp.bladeNavigationService',
-        'platformWebApp.metaFormsService',
         'virtoCommerce.marketplaceRegistrationModule.webApi',
         'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
-        function ($scope,
+        function ($scope, $localStorage,
             bladeUtils, bladeNavigationService,
-            metaFormsService,
             registrationApi,
             uiGridHelper, gridOptionExtension) {
             $scope.uiGridConstants = uiGridHelper.uiGridConstants;
@@ -16,7 +14,35 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-list.title';
             $scope.hasMore = true;
+
+            // filtering
             var filter = blade.filter = $scope.filter = {};
+            $scope.$localStorage = $localStorage;
+
+            if (!$localStorage.registrationRequestFilters) {
+                $localStorage.registrationRequestFilters = [{
+                    name: 'marketplaceRegistration.blades.registration-request-list.filters.add-new'
+                }];
+            }
+            //var activeRequestsFilter = $localStorage.registrationRequestFilters.find(x => x.id =='active-requests');
+            //if (!activeRequestsFilter) {
+            //    $localStorage.registrationRequestFilters.unshift({
+            //        id: 'active-requests',
+            //        name: 'marketplaceRegistration.blades.registration-request-list.filters.active-requests',
+            //        statuses: getActiveStatuses()
+            //    });
+            //}
+            //var finalizedRequestsFilter = $localStorage.registrationRequestFilters.find(x => x.id == 'finalized-requests');
+            //if (!finalizedRequestsFilter) {
+            //    $localStorage.registrationRequestFilters.unshift({
+            //        id: 'finalized-requests',
+            //        name: 'marketplaceRegistration.blades.registration-request-list.filters.finalized-requests',
+            //        statuses: getFinalizedStatuses()
+            //    });
+            //}
+            if ($localStorage.registrationRequestFilterId) {
+                filter.current = $localStorage.registrationRequestFilters.find(x => x.id == $localStorage.registrationRequestFilterId);
+            }
 
             blade.refresh = function (needRefreshChildBlade) {
                 blade.isLoading = true;
@@ -25,6 +51,10 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     $scope.pageSettings.currentPage = 1;
 
                     var searchCriteria = getSearchCriteria();
+
+                    if (filter.current) {
+                        angular.extend(searchCriteria, filter.current);
+                    }
 
                     if (blade.searchCriteria) {
                         angular.extend(searchCriteria, blade.searchCriteria);
@@ -39,20 +69,18 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                         if (data.results) {
                             $scope.listEntries = data.results;
                             if ($scope.selectedNodeId) {
-                                blade.selectedItem = $scope.listEntries.filter(x => x.id === $scope.selectedNodeId).find(o => true);
+                                blade.selectedItem = $scope.listEntries.find(x => x.id === $scope.selectedNodeId);
                             }
                         }
 
                         $scope.pageSettings.totalItems = data.totalCount;
                         $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
 
-                        if (blade.childBlade) {
-                            if (blade.selectedItem) {
-                                blade.childBlade.currentEntity = blade.selectedItem;
-                                if (needRefreshChildBlade) {
-                                    blade.childBlade.refresh();
-                                };
-                            }
+                        if (blade.childBlade && blade.selectedItem) {
+                            blade.childBlade.currentEntity = blade.selectedItem;
+                            if (needRefreshChildBlade) {
+                                blade.childBlade.refresh();
+                            };
                         }
                     });
 
@@ -93,26 +121,11 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             }
 
             $scope.showDetails = function (listItem) {
-                var conversationTemplate = metaFormsService.getMetaFields('RegistrationRequest');
                 var newBlade = {
                     id: 'registrationRequest',
                     currentEntity: listItem,
                     controller: 'virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
                     template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-details.tpl.html',
-                    metaFields: conversationTemplate
-                };
-                blade.childBlade = newBlade;
-                bladeNavigationService.showBlade(newBlade, blade);
-            }
-
-            $scope.startNew = function () {
-                $scope.selectedNodeId = undefined;
-                blade.selectedItem = undefined;
-
-                var newBlade = {
-                    id: 'conversationAdd',
-                    controller: 'virtoCommerce.marketplaceCommunicationModule.conversationAddController',
-                    template: 'Modules/$(VirtoCommerce.MarketplaceCommunication)/Scripts/blades/conversation-add.tpl.html'
                 };
                 blade.childBlade = newBlade;
                 bladeNavigationService.showBlade(newBlade, blade);
@@ -125,6 +138,41 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     blade.refresh(true);
                 }
             };
+
+            filter.change = function () {
+                $localStorage.registrationRequestFilterId = filter.current ? filter.current.id : null;
+                if (filter.current && !filter.current.id) {
+                    filter.current = null;
+                    showFilterDetailBlade({ isNew: true });
+                } else {
+                    bladeNavigationService.closeBlade({ id: 'filterDetail' });
+                    filter.criteriaChanged();
+                }
+            };
+
+            filter.edit = function () {
+                if (filter.current) {
+                    showFilterDetailBlade({ data: filter.current });
+                }
+            };
+
+            function showFilterDetailBlade(bladeData) {
+                var newBlade = {
+                    id: 'filterDetail',
+                    controller: 'virtoCommerce.marketplaceRegistrationModule.RegistrationRequestFilterController',
+                    template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-filter.tpl.html'
+                };
+                angular.extend(newBlade, bladeData);
+                bladeNavigationService.showBlade(newBlade, blade);
+            }
+
+            //async function getActiveStatuses() {
+            //    return (await registrationApi.allStates()).filter(x => !x.isFinal).map(x => x.name);
+            //}
+
+            //async function getFinalizedStatuses() {
+            //    return (await registrationApi.allStates()).filter(x => x.isFinal).map(x => x.name);
+            //}
 
             function getSearchCriteria() {
                 var searchCriteria = {

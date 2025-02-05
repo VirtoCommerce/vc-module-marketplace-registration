@@ -11,16 +11,39 @@
           "contact-email": "Email",
           "contact-phone": "Phone",
           "status": "Status"
+        },
+        "placeholders": {
+          "select-filter": "Select filter"
+        },
+        "filters": {
+          "add-new": "Add new filter",
+          "active-requests": "Active requests",
+          "finalized-requests": "Finalized requests"
+        }
+      },
+      "registration-request-filter": {
+        "title-new": "Registration requests filter",
+        "subtitle": "by request state",
+        "subtitle-new": "by request state",
+        "labels": {
+          "name": "Name",
+          "statuses": "Statuses"
+        },
+        "placeholders": {
+          "name": "Enter filter name",
+          "statuses": "Select statuses"
         }
       },
       "registration-request-details": {
         "title": "Registration request",
         "labels": {
+          "status": "Status",
           "first-name": "First name",
           "last-name": "Last name",
           "organization-name": "Organization",
           "contact-email": "Email",
-          "contact-phone": "Phone"
+          "contact-phone": "Phone",
+          "decline-reason": "Decline reason"
         }
       }
     },

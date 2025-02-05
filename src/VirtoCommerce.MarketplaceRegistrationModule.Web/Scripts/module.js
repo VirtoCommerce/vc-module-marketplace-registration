@@ -50,6 +50,11 @@ angular.module(moduleName, [])
             metaFormsService.registerMetaFields('RegistrationRequest',
                 [
                     {
+                        name: 'status',
+                        title: 'marketplaceRegistration.blades.registration-request-details.labels.status',
+                        valueType: 'ShortText'
+                    },
+                    {
                         name: 'firstName',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.first-name',
                         valueType: 'ShortText'
@@ -73,6 +78,14 @@ angular.module(moduleName, [])
                         name: 'contactPhone',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.contact-phone',
                         valueType: 'ShortText'
+                    },
+                    {
+                        name: 'declineReason',
+                        title: 'marketplaceRegistration.blades.registration-request-details.labels.decline-reason',
+                        valueType: 'LongText',
+                        isVisibleFn: function (blade) {
+                            return blade.currentEntity.status == 'Declined'
+                        }
                     },
                 ]
             );
