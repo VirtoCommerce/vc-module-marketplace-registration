@@ -37,6 +37,7 @@
       "registration-request-details": {
         "title": "Registration request",
         "labels": {
+          "status": "Status",
           "first-name": "First name",
           "last-name": "Last name",
           "organization-name": "Organization",

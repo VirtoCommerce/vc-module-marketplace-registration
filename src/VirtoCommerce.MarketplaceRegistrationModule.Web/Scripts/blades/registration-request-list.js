@@ -2,12 +2,10 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.registrationRequestListController',
         ['$scope', '$localStorage',
         'platformWebApp.bladeUtils', 'platformWebApp.bladeNavigationService',
-        'platformWebApp.metaFormsService',
         'virtoCommerce.marketplaceRegistrationModule.webApi',
         'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
         function ($scope, $localStorage,
             bladeUtils, bladeNavigationService,
-            metaFormsService,
             registrationApi,
             uiGridHelper, gridOptionExtension) {
             $scope.uiGridConstants = uiGridHelper.uiGridConstants;
@@ -71,20 +69,18 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                         if (data.results) {
                             $scope.listEntries = data.results;
                             if ($scope.selectedNodeId) {
-                                blade.selectedItem = $scope.listEntries.filter(x => x.id === $scope.selectedNodeId).find(o => true);
+                                blade.selectedItem = $scope.listEntries.find(x => x.id === $scope.selectedNodeId);
                             }
                         }
 
                         $scope.pageSettings.totalItems = data.totalCount;
                         $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
 
-                        if (blade.childBlade) {
-                            if (blade.selectedItem) {
-                                blade.childBlade.currentEntity = blade.selectedItem;
-                                if (needRefreshChildBlade) {
-                                    blade.childBlade.refresh();
-                                };
-                            }
+                        if (blade.childBlade && blade.selectedItem) {
+                            blade.childBlade.currentEntity = blade.selectedItem;
+                            if (needRefreshChildBlade) {
+                                blade.childBlade.refresh();
+                            };
                         }
                     });
 
@@ -125,13 +121,11 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             }
 
             $scope.showDetails = function (listItem) {
-                var conversationTemplate = metaFormsService.getMetaFields('RegistrationRequest');
                 var newBlade = {
                     id: 'registrationRequest',
                     currentEntity: listItem,
                     controller: 'virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
                     template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-details.tpl.html',
-                    metaFields: conversationTemplate
                 };
                 blade.childBlade = newBlade;
                 bladeNavigationService.showBlade(newBlade, blade);

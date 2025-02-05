@@ -2,14 +2,15 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
         ['$scope',
             'platformWebApp.bladeNavigationService', 'virtoCommerce.marketplaceModule.webApi',
+            'platformWebApp.metaFormsService',
             'virtoCommerce.marketplaceModule.stateMachineRegistrar',
             function ($scope,
                 bladeNavigationService, marketplaceApi,
+                metaFormsService,
                 stateMachineRegistrar) {
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-details.title';
-            blade.isLoading = true;
 
             function initializeBlade(data) {
                 blade.currentEntity = angular.copy(data);
@@ -21,9 +22,14 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             }
 
             blade.refresh = function (parentRefresh) {
+                blade.isLoading = true;
+                blade.metaFields = [];
+
                 if (parentRefresh) {
                     blade.parentBlade.refresh(true);
                 }
+                var registrationRequestTemplate = metaFormsService.getMetaFields('RegistrationRequest');
+                blade.metaFields = registrationRequestTemplate;
 
                 if (blade.currentEntity) {
                     blade.stateMachineInstance = null;
