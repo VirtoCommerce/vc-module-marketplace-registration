@@ -1,0 +1,31 @@
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block clearfix">
+            <form class="form" name="formScope">
+                <div class="form-group" ng-init="setForm(formScope)">
+                  <label class="form-label">{{ 'marketplaceRegistration.blades.registration-request-filter.labels.name' | translate }}</label>
+                    <div class="form-input">
+                        <input ng-model="blade.currentEntity.name"
+                               placeholder="{{ 'marketplaceRegistration.blades.registration-request-filter.placeholders.name' | translate }}"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">{{ 'marketplaceRegistration.blades.registration-request-filter.labels.statuses' | translate }}</label>
+                    <div class="form-input">
+                        <ui-select multiple
+                                   search-enabled="false"
+                                   ng-model="blade.currentEntity.statuses">
+                            <ui-select-match placeholder="{{ 'marketplaceRegistration.blades.registration-request-filter.placeholders.statuses' | translate }}">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="x in blade.statuses">
+                                <span ng-bind-html="x"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
