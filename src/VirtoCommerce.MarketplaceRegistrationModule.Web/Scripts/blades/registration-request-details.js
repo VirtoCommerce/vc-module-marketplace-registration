@@ -2,11 +2,9 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
         ['$scope',
             'platformWebApp.bladeNavigationService', 'virtoCommerce.marketplaceModule.webApi',
-            'platformWebApp.metaFormsService',
             'virtoCommerce.marketplaceModule.stateMachineRegistrar',
             function ($scope,
                 bladeNavigationService, marketplaceApi,
-                metaFormsService,
                 stateMachineRegistrar) {
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
@@ -23,13 +21,10 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
 
             blade.refresh = function (parentRefresh) {
                 blade.isLoading = true;
-                blade.metaFields = [];
 
                 if (parentRefresh) {
                     blade.parentBlade.refresh(true);
                 }
-                var registrationRequestTemplate = metaFormsService.getMetaFields('RegistrationRequest');
-                blade.metaFields = registrationRequestTemplate;
 
                 if (blade.currentEntity) {
                     blade.stateMachineInstance = null;
@@ -45,7 +40,11 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     });
 
                 }
-            };
+                };
+
+                blade.close = function () {
+                    $scope.bladeClose();
+                }
 
             function fillTollbarCommands() {
                 blade.toolbarCommands = [];

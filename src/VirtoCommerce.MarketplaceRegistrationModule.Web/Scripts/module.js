@@ -10,15 +10,19 @@ angular.module(moduleName, [])
             $stateProvider
                 .state('workspace.registrationrequest', {
                     url: '/registrationrequest',
+                    params: {
+                        notification: null,
+                    },
                     templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
                     controller: [
-                        'platformWebApp.bladeNavigationService',
-                        function (bladeNavigationService) {
+                        '$stateParams', 'platformWebApp.bladeNavigationService',
+                        function ($stateParams, bladeNavigationService) {
                             var newBlade = {
                                 id: 'registrationRequestList',
                                 controller: 'virtoCommerce.marketplaceRegistrationModule.registrationRequestListController',
                                 template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-list.tpl.html',
                                 isClosingDisabled: true,
+                                notification: $stateParams.notification,
                             };
                             bladeNavigationService.showBlade(newBlade);
                         }
@@ -29,10 +33,12 @@ angular.module(moduleName, [])
     .run(['platformWebApp.mainMenuService', '$state',
         'platformWebApp.metaFormsService', 'virtoCommerce.marketplaceModule.stateMachineRegistrar',
         'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService',
+        'platformWebApp.pushNotificationTemplateResolver',
         'virtoCommerce.marketplaceRegistrationModule.webApi',
         function (mainMenuService, $state,
             metaFormsService, stateMachineRegistrar,
             dialogService, bladeNavigationService,
+            pushNotificationTemplateResolver,
             registrationApi
         ) {
             //Register module in main menu
@@ -52,37 +58,44 @@ angular.module(moduleName, [])
                     {
                         name: 'status',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.status',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'firstName',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.first-name',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'lastName',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.last-name',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'organizationName',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.organization-name',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'contactEmail',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.contact-email',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'contactPhone',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.contact-phone',
-                        valueType: 'ShortText'
+                        valueType: 'ShortText',
+                        isReadOnly: true
                     },
                     {
                         name: 'declineReason',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.decline-reason',
                         valueType: 'LongText',
+                        isReadOnly: true,
                         isVisibleFn: function (blade) {
                             return blade.currentEntity.status == 'Declined'
                         }
@@ -128,7 +141,7 @@ angular.module(moduleName, [])
                                     id: blade.currentEntity.id,
                                     comment: dialog.comment.text
                                 }, function (data) {
-                                    blade.currentEntity = data;
+                                    blade.close();
                                 });
                                 successCallback();
                             }
@@ -136,6 +149,32 @@ angular.module(moduleName, [])
                     }
                     dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/dialogs/decline-request-dialog.tpl.html', 'platformWebApp.confirmDialogController');
                 }
+            });
+
+            // Registration request notification template
+            pushNotificationTemplateResolver.register({
+                priority: 900,
+                satisfy: function (notify, place) {
+                    return (place === 'history' || place === 'header-notification')
+                        && notify.notifyType === 'RegistrationRequestPushNotification';
+                },
+                template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/notifications/registration-request-notification.tpl.html',
+                action: function (notify) {
+                    if ($state.current.name !== 'workspace.registrationrequest') {
+                        $state.go('workspace.registrationrequest', { notification: notify });
+                    }
+                    else {
+                        var blade = {
+                            id: 'registrationRequestList',
+                            notification: notify,
+                            isClosingDisabled: true,
+                            controller: 'virtoCommerce.marketplaceRegistrationModule.registrationRequestListController',
+                            template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-list.tpl.html',
+                        };
+                        bladeNavigationService.showBlade(blade);
+                    }
+                }
+
             });
 
         }

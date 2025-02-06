@@ -1,20 +1,25 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Models;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
+using VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Commands;
 public class CreateRegistrationRequestCommandHandler : ICommandHandler<CreateRegistrationRequestCommand, RegistrationRequest>
 {
     private readonly IRegistrationRequestService _registrationRequestService;
+    private readonly RegistrationRequestValidatorBase _registrationRequestValidator;
 
     public CreateRegistrationRequestCommandHandler(
-        IRegistrationRequestService registrationRequestService
+        IRegistrationRequestService registrationRequestService,
+        RegistrationRequestValidatorBase registrationRequestValidator
         )
     {
         _registrationRequestService = registrationRequestService;
+        _registrationRequestValidator = registrationRequestValidator;
     }
 
     public virtual async Task<RegistrationRequest> Handle(CreateRegistrationRequestCommand request, CancellationToken cancellationToken)
@@ -24,14 +29,16 @@ public class CreateRegistrationRequestCommandHandler : ICommandHandler<CreateReg
             throw new ArgumentNullException(nameof(request));
         }
 
-        var details = ExType<RegistrationRequestDetails>.New();
-        details.FirstName = request.FirstName;
-        details.LastName = request.LastName;
-        details.OrganizationName = request.OrganizationName;
-        details.ContactEmail = request.ContactEmail;
-        details.ContactPhone = request.ContactPhone;
+        var registrationRequest = ExType<RegistrationRequest>.New();
+        registrationRequest.FirstName = request.FirstName;
+        registrationRequest.LastName = request.LastName;
+        registrationRequest.OrganizationName = request.OrganizationName;
+        registrationRequest.ContactEmail = request.ContactEmail;
+        registrationRequest.ContactPhone = request.ContactPhone;
 
-        var result = await _registrationRequestService.CreateRegistrationRequest(details);
+        await _registrationRequestValidator.ValidateAndThrowAsync(registrationRequest, cancellationToken);
+
+        var result = await _registrationRequestService.CreateRegistrationRequest(registrationRequest);
 
         return result;
     }
