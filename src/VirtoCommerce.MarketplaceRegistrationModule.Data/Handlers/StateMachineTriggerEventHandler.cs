@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.StateMachineModule.Core.Events;
 using static VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Handlers;

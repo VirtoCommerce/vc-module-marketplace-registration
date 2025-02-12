@@ -31,7 +31,7 @@ angular.module(moduleName, [])
         }
     ])
     .run(['platformWebApp.mainMenuService', '$state',
-        'platformWebApp.metaFormsService', 'virtoCommerce.marketplaceModule.stateMachineRegistrar',
+        'platformWebApp.metaFormsService', 'virtoCommerce.stateMachineModule.stateMachineRegistrar',
         'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService',
         'platformWebApp.pushNotificationTemplateResolver',
         'virtoCommerce.marketplaceRegistrationModule.webApi',

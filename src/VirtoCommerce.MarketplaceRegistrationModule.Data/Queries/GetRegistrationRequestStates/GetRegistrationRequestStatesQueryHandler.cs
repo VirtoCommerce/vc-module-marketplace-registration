@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.StateMachineModule.Core.Models;
+using VirtoCommerce.StateMachineModule.Core.Services;
 using static VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Queries.GetRegistrationRequestStates;

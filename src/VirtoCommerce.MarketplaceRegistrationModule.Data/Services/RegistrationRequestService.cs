@@ -5,8 +5,8 @@ using VirtoCommerce.MarketplaceRegistrationModule.Core.Models;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.PushNotifications;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
 using VirtoCommerce.MarketplaceVendorModule.Core;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Services;
 using VirtoCommerce.Platform.Core.PushNotifications;
+using VirtoCommerce.StateMachineModule.Core.Services;
 using ModuleConstants = VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Services;

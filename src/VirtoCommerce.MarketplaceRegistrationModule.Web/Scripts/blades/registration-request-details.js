@@ -2,7 +2,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
         ['$scope',
             'platformWebApp.bladeNavigationService', 'virtoCommerce.marketplaceModule.webApi',
-            'virtoCommerce.marketplaceModule.stateMachineRegistrar',
+            'virtoCommerce.stateMachineModule.stateMachineRegistrar',
             function ($scope,
                 bladeNavigationService, marketplaceApi,
                 stateMachineRegistrar) {

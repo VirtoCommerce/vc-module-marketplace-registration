@@ -13,7 +13,6 @@ using VirtoCommerce.MarketplaceRegistrationModule.Data.Repositories;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -21,6 +20,7 @@ using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
+using VirtoCommerce.StateMachineModule.Core.Events;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Web;
 

@@ -9,7 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.875.0" />
-    <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.827.0-alpha.839" />
+    <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.827.0-alpha.841" />
+    <PackageReference Include="VirtoCommerce.StateMachineModule.Core" Version="3.800.0-alpha.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\" />

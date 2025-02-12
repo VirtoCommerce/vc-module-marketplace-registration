@@ -5,8 +5,8 @@ using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.StateMachineModule.Core.Services;
 using static VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
