@@ -1,11 +1,9 @@
 angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
         ['$scope',
-            'platformWebApp.bladeNavigationService', 'virtoCommerce.marketplaceModule.webApi',
-            'virtoCommerce.stateMachineModule.stateMachineRegistrar',
+            'virtoCommerce.stateMachineModule.webApi', 'virtoCommerce.stateMachineModule.stateMachineRegistrar',
             function ($scope,
-                bladeNavigationService, marketplaceApi,
-                stateMachineRegistrar) {
+                stateMachineApi, stateMachineRegistrar) {
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-details.title';
@@ -28,7 +26,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
 
                 if (blade.currentEntity) {
                     blade.stateMachineInstance = null;
-                    marketplaceApi.searchStateMachineInstance({
+                    stateMachineApi.searchStateMachineInstance({
                         objectTypes: ['VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'],
                         objectIds: [blade.currentEntity.id],
                         take: 1
@@ -92,7 +90,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             }
 
             function doStateMachineStep(trigger) {
-                marketplaceApi.fireSmInstanceTrigger({
+                stateMachineApi.fireStateMachineInstanceTrigger({
                     stateMachineInstanceId: blade.stateMachineInstance.id,
                     trigger: trigger,
                     entityId: blade.currentEntity.id

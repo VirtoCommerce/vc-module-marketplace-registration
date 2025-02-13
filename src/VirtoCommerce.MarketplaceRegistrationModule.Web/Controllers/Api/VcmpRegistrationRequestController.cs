@@ -9,7 +9,7 @@ using VirtoCommerce.MarketplaceRegistrationModule.Data.Commands;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Queries;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Queries.GetRegistrationRequestStates;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
-using VirtoCommerce.MarketplaceVendorModule.StateMachine.Models;
+using VirtoCommerce.StateMachineModule.Core.Models;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Web.Controllers.Api;
 
