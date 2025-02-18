@@ -13,9 +13,9 @@ using VirtoCommerce.MarketplaceRegistrationModule.Data.Repositories;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
+using VirtoCommerce.MarketplaceRegistrationModule.Web.Authorization;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
-using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
@@ -75,9 +75,8 @@ public class Module : IModule, IHasConfiguration
         var settingsRegistrar = serviceProvider.GetRequiredService<ISettingsRegistrar>();
         settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-        // Register permissions
-        var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
-        permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "MarketplaceRegistrationModule", ModuleConstants.Security.Permissions.AllPermissions);
+        //Register module authorization
+        appBuilder.UseModuleAuthorization();
 
         // Apply migrations
         using var serviceScope = serviceProvider.CreateScope();

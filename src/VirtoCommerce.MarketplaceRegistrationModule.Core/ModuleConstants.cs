@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Core;
@@ -9,20 +11,31 @@ public static class ModuleConstants
     {
         public static class Permissions
         {
-            public const string Access = "MarketplaceRegistrationModule:access";
-            public const string Create = "MarketplaceRegistrationModule:create";
-            public const string Read = "MarketplaceRegistrationModule:read";
-            public const string Update = "MarketplaceRegistrationModule:update";
-            public const string Delete = "MarketplaceRegistrationModule:delete";
+            public const string Read = "seller:registration:read";
+            public const string Update = "seller:registration:update";
 
             public static string[] AllPermissions { get; } =
             {
-                Access,
-                Create,
                 Read,
                 Update,
-                Delete,
             };
+        }
+
+        public static class Roles
+        {
+            public static readonly Role Operator = new()
+            {
+                Id = "vcmp-operator-role",
+                Permissions = new[]
+                {
+                    Permissions.Read,
+                    Permissions.Update
+                }
+                .Select(x => new Permission { GroupName = "Marketplace", Name = x })
+                .ToList()
+            };
+
+            public static Role[] AllRoles = { Operator };
         }
     }
 
