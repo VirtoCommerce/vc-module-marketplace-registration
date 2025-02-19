@@ -48,7 +48,7 @@ angular.module(moduleName, [])
                 title: 'marketplaceRegistration.main-menu-title',
                 priority: 100,
                 action: function () { $state.go('workspace.registrationrequest'); },
-                permission: 'MarketplaceRegistrationModule:access',
+                permission: 'seller:registration:read',
             };
             mainMenuService.addMenuItem(menuItem);
 

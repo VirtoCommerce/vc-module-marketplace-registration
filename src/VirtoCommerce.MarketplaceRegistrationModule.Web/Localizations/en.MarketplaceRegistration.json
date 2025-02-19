@@ -62,11 +62,8 @@
     }
   },
   "permissions": {
-    "MarketplaceRegistrationModule:access": "Open MarketplaceRegistrationModule menu",
-    "MarketplaceRegistrationModule:create": "Create MarketplaceRegistrationModule related data",
-    "MarketplaceRegistrationModule:read": "View MarketplaceRegistrationModule related data",
-    "MarketplaceRegistrationModule:update": "Update MarketplaceRegistrationModule related data",
-    "MarketplaceRegistrationModule:delete": "Delete MarketplaceRegistrationModule related data"
+    "seller:registration:read": "View registration requests",
+    "seller:registration:update": "Update registration requests"
   },
   "settings": {
     "MarketplaceRegistrationModule": {
