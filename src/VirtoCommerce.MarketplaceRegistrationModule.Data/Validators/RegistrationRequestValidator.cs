@@ -1,11 +1,11 @@
 using System.Linq;
 using FluentValidation;
-using VirtoCommerce.CustomerModule.Core.Model.Search;
-using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Security.Search;
 using VirtoCommerce.StateMachineModule.Core.Services;
 using static VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
@@ -14,8 +14,8 @@ public class RegistrationRequestValidator : RegistrationRequestValidatorBase
 {
     public RegistrationRequestValidator(
         IRegistrationRequestSearchService _registrationRequestSearchService,
-        IMemberSearchService _memberSearchService,
-        IStateMachineDefinitionService _stateMachineDefinitionService
+        IStateMachineDefinitionService _stateMachineDefinitionService,
+        IUserSearchService _userSearchService
         )
     {
         RuleFor(x => x).NotNull();
@@ -43,15 +43,14 @@ public class RegistrationRequestValidator : RegistrationRequestValidatorBase
 
         RuleFor(x => x).CustomAsync(async (registrationRequest, context, token) =>
         {
-            //Search accross all members with same contact emails
-            var membersSearchCriteria = ExType<MembersSearchCriteria>.New();
-            membersSearchCriteria.Keyword = registrationRequest.ContactEmail;
-            membersSearchCriteria.DeepSearch = true;
-            membersSearchCriteria.Take = 1;
+            //Search accross all users with same contact emails
+            var userSearchCriteria = ExType<UserSearchCriteria>.New();
+            userSearchCriteria.Keyword = registrationRequest.ContactEmail;
+            userSearchCriteria.Take = 1;
 
-            var membersSearchResult = await _memberSearchService.SearchMembersAsync(membersSearchCriteria);
-            var memberWithSameEmail = membersSearchResult.Results.FirstOrDefault();
-            if (memberWithSameEmail != null)
+            var userSearchResult = await _userSearchService.SearchUsersAsync(userSearchCriteria);
+            var userWithSameEmail = userSearchResult.Results.FirstOrDefault();
+            if (userWithSameEmail != null)
             {
                 context.AddFailure(RegistrationRequestErrorDescriber.SellerEmailAlreadyExists(registrationRequest.ContactEmail));
             }
