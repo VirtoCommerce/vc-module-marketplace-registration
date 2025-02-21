@@ -4,6 +4,9 @@
     "blades": {
       "registration-request-list": {
         "title": "Registration requests",
+        "commands": {
+          "add": "New request"
+        },
         "labels": {
           "first-name": "First name",
           "last-name": "Last name",
@@ -66,10 +69,10 @@
     "seller:registration:update": "Update registration requests"
   },
   "settings": {
-    "MarketplaceRegistrationModule": {
-      "MarketplaceRegistrationModuleEnabled": {
-        "title": "MarketplaceRegistrationModule Enabled",
-        "description": "MarketplaceRegistrationModule Enabled setting"
+    "RegistrationRequest": {
+      "RegistrationFormUrl": {
+        "title": "Registration form url",
+        "description": "Relative or absolute"
       },
       "MarketplaceRegistrationModulePassword": {
         "title": "MarketplaceRegistrationModule Password",

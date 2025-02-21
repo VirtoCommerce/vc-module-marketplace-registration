@@ -4,7 +4,7 @@ using FluentValidation.Results;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Validators;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 
-namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Queries.ValidateRegistrationRequest;
+namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Queries;
 public class ValidateRegistrationRequestQueryHandler : IQueryHandler<ValidateRegistrationRequestQuery, ValidationFailure[]>
 {
     private readonly RegistrationRequestValidatorBase _validator;

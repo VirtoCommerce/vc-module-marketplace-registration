@@ -48,28 +48,19 @@ public static class ModuleConstants
     {
         public static class General
         {
-            public static SettingDescriptor MarketplaceRegistrationModuleEnabled { get; } = new()
+            public static SettingDescriptor RegistrationFormUrl { get; } = new()
             {
-                Name = "MarketplaceRegistrationModule.MarketplaceRegistrationModuleEnabled",
-                GroupName = "MarketplaceRegistrationModule|General",
-                ValueType = SettingValueType.Boolean,
-                DefaultValue = false,
-            };
-
-            public static SettingDescriptor MarketplaceRegistrationModulePassword { get; } = new()
-            {
-                Name = "MarketplaceRegistrationModule.MarketplaceRegistrationModulePassword",
-                GroupName = "MarketplaceRegistrationModule|Advanced",
-                ValueType = SettingValueType.SecureString,
-                DefaultValue = "qwerty",
+                Name = "RegistrationRequest.RegistrationFormUrl",
+                GroupName = "Marketplace RegistrationRequest|General",
+                ValueType = SettingValueType.ShortText,
+                DefaultValue = "/registration",
             };
 
             public static IEnumerable<SettingDescriptor> AllGeneralSettings
             {
                 get
                 {
-                    yield return MarketplaceRegistrationModuleEnabled;
-                    yield return MarketplaceRegistrationModulePassword;
+                    yield return RegistrationFormUrl;
                 }
             }
         }

@@ -7,7 +7,6 @@ using VirtoCommerce.MarketplaceRegistrationModule.Core.Models;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Commands;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Queries;
-using VirtoCommerce.MarketplaceRegistrationModule.Data.Queries.GetRegistrationRequestStates;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 using VirtoCommerce.StateMachineModule.Core.Models;
 
@@ -72,6 +71,17 @@ public class VcmpRegistrationRequestController : ControllerBase
     public async Task<ActionResult<StateMachineStateShort[]>> GetAllStates()
     {
         var query = ExType<GetRegistrationRequestStatesQuery>.New();
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("settings")]
+    [Authorize(Core.ModuleConstants.Security.Permissions.Read)]
+    public async Task<ActionResult<RegistrationRequestSettings>> GetSettings()
+    {
+        var query = ExType<GetRegistrationRequestSettingsQuery>.New();
         var result = await _mediator.Send(query);
 
         return Ok(result);

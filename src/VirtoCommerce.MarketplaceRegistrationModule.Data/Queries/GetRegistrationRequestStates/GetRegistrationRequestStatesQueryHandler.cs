@@ -8,7 +8,7 @@ using VirtoCommerce.StateMachineModule.Core.Models;
 using VirtoCommerce.StateMachineModule.Core.Services;
 using static VirtoCommerce.MarketplaceRegistrationModule.Core.ModuleConstants;
 
-namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Queries.GetRegistrationRequestStates;
+namespace VirtoCommerce.MarketplaceRegistrationModule.Data.Queries;
 public class GetRegistrationRequestStatesQueryHandler : IQueryHandler<GetRegistrationRequestStatesQuery, StateMachineStateShort[]>
 {
     private readonly IStateMachineDefinitionService _stateMachineDefinitionService;

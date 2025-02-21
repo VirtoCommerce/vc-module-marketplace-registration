@@ -3,12 +3,12 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
         ['$scope', '$localStorage',
         'platformWebApp.bladeUtils', 'platformWebApp.bladeNavigationService',
         'platformWebApp.metaFormsService',
-        'virtoCommerce.marketplaceRegistrationModule.webApi',
+        'virtoCommerce.marketplaceRegistrationModule.webApi', 'virtoCommerce.marketplaceModule.webApi',
         'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
         function ($scope, $localStorage,
             bladeUtils, bladeNavigationService,
             metaFormsService,
-            registrationApi,
+            registrationApi, marketplaceApi,
             uiGridHelper, gridOptionExtension) {
             $scope.uiGridConstants = uiGridHelper.uiGridConstants;
 
@@ -84,6 +84,16 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                         }
                     });
 
+                marketplaceApi.getSettings((settings) => {
+                    blade.vendorPortalUrl = settings.vendorPortalUrl;
+                    correctRegistrationFormUrl();
+                });
+
+                registrationApi.getSettings((settings) => {
+                    blade.registrationFormUrl = settings.registrationFormUrl;
+                    correctRegistrationFormUrl();
+                });
+
                 resetStateGrid();
             };
 
@@ -96,8 +106,40 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     canExecuteMethod: function () {
                         return true;
                     }
+                },
+                {
+                    name: "marketplaceRegistration.blades.registration-request-list.commands.add",
+                    icon: 'fas fa-plus',
+                    executeMethod: redirectToRegistrationForm,
+                    canExecuteMethod: function () {
+                        return blade.registrationFormUrl;
+                    }
                 }
             ];
+
+            function correctRegistrationFormUrl() {
+                if (blade.registrationFormUrl && blade.registrationFormUrl.length > 1
+                    && !(blade.registrationFormUrl.startsWith("http://") || blade.registrationFormUrl.startsWith("https://"))
+                    && blade.vendorPortalUrl && blade.vendorPortalUrl.length > 1) {
+                        let vendorPortalUrl = blade.vendorPortalUrl;
+                        if (vendorPortalUrl.endsWith("/")) {
+                            vendorPortalUrl = vendorPortalUrl.substring(0, vendorPortalUrl.length - 1);
+                        }
+
+                    let registrationFormUrl = blade.registrationFormUrl;
+                        if (registrationFormUrl.startsWith("/")) {
+                            registrationFormUrl = registrationFormUrl.substring(1, registrationFormUrl.length);
+                        }
+
+                        blade.registrationFormUrl = vendorPortalUrl + "/" + registrationFormUrl;
+                }
+            }
+
+            function redirectToRegistrationForm() {
+                if (blade.registrationFormUrl && blade.registrationFormUrl.length > 1) {
+                    window.open(blade.registrationFormUrl, '_blank');
+                }
+            }
 
             var setSelectedItem = function (listItem) {
                 $scope.selectedNodeId = listItem.id;
