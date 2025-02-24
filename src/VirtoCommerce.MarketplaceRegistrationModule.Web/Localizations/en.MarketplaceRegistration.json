@@ -46,7 +46,8 @@
           "organization-name": "Organization",
           "contact-email": "Email",
           "contact-phone": "Phone",
-          "decline-reason": "Decline reason"
+          "decline-reason": "Decline reason",
+          "open-vendor-details": "Open vendor details"
         }
       }
     },

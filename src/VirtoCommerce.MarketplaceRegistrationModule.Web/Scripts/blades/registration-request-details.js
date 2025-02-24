@@ -2,11 +2,17 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
         ['$scope',
             'virtoCommerce.stateMachineModule.webApi', 'virtoCommerce.stateMachineModule.stateMachineRegistrar',
+            'virtoCommerce.marketplaceModule.webApi',
+            'platformWebApp.metaFormsService', 'platformWebApp.bladeUtils',
             function ($scope,
-                stateMachineApi, stateMachineRegistrar) {
+                stateMachineApi, stateMachineRegistrar,
+                marketplaceApi,
+                metaFormsService, bladeUtils) {
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-details.title';
+
+            var bladeNavigationService = bladeUtils.bladeNavigationService;
 
             function initializeBlade(data) {
                 blade.currentEntity = angular.copy(data);
@@ -73,6 +79,32 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             $scope.setForm = function (form) {
                 $scope.formScope = form;
             };
+
+            blade.openVendorDetails = function(){
+                var searchCriteria = {
+                    keyword: blade.currentEntity.organizationName,
+                    skip: 0,
+                    take: 1
+                };
+
+                marketplaceApi.searchSellers(searchCriteria, function (data) {
+                    if (data && data.results && data.results.length > 0) {
+                        var existedSeller = data.results[0];
+
+                        var foundMetaFields = metaFormsService.getMetaFields('Seller');
+                        var newBlade = {
+                            id: 'sellerDetails',
+                            title: existedSeller.name,
+                            subtitle: 'marketplace.blades.seller-details.subtitle',
+                            currentEntity: existedSeller,
+                            controller: 'virtoCommerce.marketplaceModule.sellerDetailsController',
+                            template: 'Modules/$(VirtoCommerce.MarketplaceVendor)/Scripts/blades/seller-details.tpl.html',
+                            metaFields: foundMetaFields
+                        };
+                        bladeNavigationService.showBlade(newBlade, blade);
+                    }
+                });
+            }
 
             function doAction(trigger) {
                 blade.isLoading = true;

@@ -80,6 +80,13 @@ angular.module(moduleName, [])
                         isReadOnly: true
                     },
                     {
+                        name: 'organizationName',
+                        templateUrl: 'registrationRequest-organizationNameField.html',
+                        isVisibleFn: function (blade) {
+                            return blade.currentEntity.status == 'Completed'
+                        }
+                    },
+                    {
                         name: 'contactEmail',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.contact-email',
                         valueType: 'ShortText',
