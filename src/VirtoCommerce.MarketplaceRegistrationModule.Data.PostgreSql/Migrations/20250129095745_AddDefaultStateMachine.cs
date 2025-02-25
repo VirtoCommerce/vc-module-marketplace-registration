@@ -82,6 +82,7 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.Migrations
                             ""description"": ""Declined registration request"",
                             ""isInitial"": false,
                             ""isFinal"": true,
+                            ""isFailed"": true,
                             ""stateData"": {},
                             ""transitions"": []
                           },
@@ -91,6 +92,7 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.Migrations
                             ""description"": ""Registration request converted into a Vendor"",
                             ""isInitial"": false,
                             ""isFinal"": true,
+                            ""isSuccess"": true,
                             ""stateData"": {},
                             ""transitions"": []
                           }

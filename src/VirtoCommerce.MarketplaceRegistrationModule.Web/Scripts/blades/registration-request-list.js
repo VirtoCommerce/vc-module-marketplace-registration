@@ -4,11 +4,13 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
         'platformWebApp.bladeUtils', 'platformWebApp.bladeNavigationService',
         'platformWebApp.metaFormsService',
         'virtoCommerce.marketplaceRegistrationModule.webApi', 'virtoCommerce.marketplaceModule.webApi',
+        'virtoCommerce.stateMachineModule.webApi',
         'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
         function ($scope, $localStorage,
             bladeUtils, bladeNavigationService,
             metaFormsService,
             registrationApi, marketplaceApi,
+            stateMachineApi,
             uiGridHelper, gridOptionExtension) {
             $scope.uiGridConstants = uiGridHelper.uiGridConstants;
 
@@ -153,16 +155,30 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             }
 
             $scope.showDetails = function (listItem) {
-                var registrationRequestTemplate = metaFormsService.getMetaFields('RegistrationRequest');
-                var newBlade = {
-                    id: 'registrationRequest',
-                    currentEntity: listItem,
-                    controller: 'virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
-                    template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-details.tpl.html',
-                    metaFields: registrationRequestTemplate,
-                };
-                blade.childBlade = newBlade;
-                bladeNavigationService.showBlade(newBlade, blade);
+                stateMachineApi.allStates({ entityType: 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest' },
+                    function (data) {
+                        var registrationRequestTemplate = metaFormsService.getMetaFields('RegistrationRequest');
+                        var newBlade = {
+                            id: 'registrationRequest',
+                            currentEntity: listItem,
+                            controller: 'virtoCommerce.marketplaceRegistrationModule.regisrationRequestDetailsController',
+                            template: 'Modules/$(VirtoCommerce.MarketplaceRegistration)/Scripts/blades/registration-request-details.tpl.html',
+                            metaFields: registrationRequestTemplate,
+                        };
+
+                        let successStatus = data.find(x => x.isFinal && x.isSuccess);
+                        if (successStatus) {
+                            newBlade.showSuccessFields = listItem.status == successStatus.name;
+                        }
+
+                        let failedStatus = data.find(x => x.isFinal && x.isFailed);
+                        if (failedStatus) {
+                            newBlade.showFailedFields = listItem.status == failedStatus.name;
+                        }
+
+                        blade.childBlade = newBlade;
+                        bladeNavigationService.showBlade(newBlade, blade);
+                    });
             }
 
             filter.criteriaChanged = function () {

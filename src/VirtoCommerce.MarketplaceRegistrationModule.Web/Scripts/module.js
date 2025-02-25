@@ -83,7 +83,7 @@ angular.module(moduleName, [])
                         name: 'organizationName',
                         templateUrl: 'registrationRequest-organizationNameField.html',
                         isVisibleFn: function (blade) {
-                            return blade.currentEntity.status == 'Completed'
+                            return blade.showSuccessFields;
                         }
                     },
                     {
@@ -104,7 +104,7 @@ angular.module(moduleName, [])
                         valueType: 'LongText',
                         isReadOnly: true,
                         isVisibleFn: function (blade) {
-                            return blade.currentEntity.status == 'Declined'
+                            return blade.showFailedFields;
                         }
                     },
                 ]

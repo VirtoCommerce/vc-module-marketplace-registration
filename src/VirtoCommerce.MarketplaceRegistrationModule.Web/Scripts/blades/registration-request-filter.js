@@ -1,10 +1,10 @@
 angular.module('virtoCommerce.marketplaceRegistrationModule')
     .controller('virtoCommerce.marketplaceRegistrationModule.RegistrationRequestFilterController',
         ['$scope', '$localStorage',
-        'virtoCommerce.marketplaceRegistrationModule.webApi',
+        'virtoCommerce.stateMachineModule.webApi',
         function (
             $scope, $localStorage,
-            registrationApi
+            stateMachineApi
         ) {
         var blade = $scope.blade;
 
@@ -36,7 +36,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             blade.title = blade.isNew ? 'marketplaceRegistration.blades.registration-request-filter.title-new' : data.name;
             blade.subtitle = blade.isNew ? 'marketplaceRegistration.blades.registration-request-filter.subtitle-new' : 'marketplaceRegistration.blades.registration-request-filter.subtitle';
 
-            registrationApi.allStates({}, function (data) {
+            stateMachineApi.allStates({ entityType: 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest' }, function (data) {
                 blade.statuses = data.map(x => x.name);
             });
             
