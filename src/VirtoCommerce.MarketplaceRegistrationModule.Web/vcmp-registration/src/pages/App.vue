@@ -35,4 +35,5 @@ console.debug(`Initializing App`);
 
 <style lang="scss">
 @import "./../styles/index.scss";
+@import "./../styles/base.scss";
 </style>
