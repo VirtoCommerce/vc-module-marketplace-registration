@@ -1,11 +1,11 @@
 using System;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.MarketplaceRegistrationModule.Core;
 using VirtoCommerce.MarketplaceRegistrationModule.Core.Services;
+using VirtoCommerce.MarketplaceRegistrationModule.Data;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.Handlers;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.MySql;
 using VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql;
@@ -61,7 +61,7 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<IRegistrationRequestCrudService, RegistrationRequestCrudService>();
         serviceCollection.AddTransient<IRegistrationRequestSearchService, RegistrationRequestSearchService>();
 
-        serviceCollection.AddMediatR(typeof(Data.Anchor));
+        serviceCollection.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Anchor>());
     }
 
     public void PostInitialize(IApplicationBuilder appBuilder)

@@ -14,9 +14,6 @@
     <None Remove="vcmp-registration\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="9.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Core\VirtoCommerce.MarketplaceRegistrationModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data\VirtoCommerce.MarketplaceRegistrationModule.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql\VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.csproj" />
