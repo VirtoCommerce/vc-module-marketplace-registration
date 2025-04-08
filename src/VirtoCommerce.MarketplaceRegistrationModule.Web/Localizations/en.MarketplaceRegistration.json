@@ -80,5 +80,10 @@
         "description": "MarketplaceRegistrationModule Password setting"
       }
     }
+  },
+  "module": {
+    "VirtoCommerce.MarketplaceRegistration": {
+      "description": "Export/Import of Vendor RegistrationRequests"
+    }
   }
 }
