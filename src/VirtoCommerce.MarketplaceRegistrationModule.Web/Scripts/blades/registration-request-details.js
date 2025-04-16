@@ -35,6 +35,8 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     stateMachineApi.searchStateMachineInstance({
                         objectTypes: ['VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'],
                         objectIds: [blade.currentEntity.id],
+                        responseGroup: 'withLocalization',
+                        locale: 'en-US',
                         take: 1
                     }, function (response) {
                         if (response.totalCount > 0) {
