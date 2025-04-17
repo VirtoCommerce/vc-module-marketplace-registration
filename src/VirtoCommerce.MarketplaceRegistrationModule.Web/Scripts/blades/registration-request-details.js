@@ -4,10 +4,12 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             'virtoCommerce.stateMachineModule.webApi', 'virtoCommerce.stateMachineModule.stateMachineRegistrar',
             'virtoCommerce.marketplaceModule.webApi',
             'platformWebApp.metaFormsService', 'platformWebApp.bladeUtils',
+            'platformWebApp.i18n',
             function ($scope,
                 stateMachineApi, stateMachineRegistrar,
                 marketplaceApi,
-                metaFormsService, bladeUtils) {
+                metaFormsService, bladeUtils,
+                i18n) {
             var blade = $scope.blade;
             blade.headIcon = 'fa fa-address-card';
             blade.title = 'marketplaceRegistration.blades.registration-request-details.title';
@@ -36,7 +38,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                         objectTypes: ['VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'],
                         objectIds: [blade.currentEntity.id],
                         responseGroup: 'withLocalization',
-                        locale: 'en-US',
+                        locale: i18n.getLanguage(),
                         take: 1
                     }, function (response) {
                         if (response.totalCount > 0) {
@@ -61,7 +63,7 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
                     blade.stateMachineInstance.currentState.transitions.forEach((element, index) => {
                         var command = {
                             id: 'command' + element.trigger,
-                            name: 'marketplaceRegistration.state-trigger-actions.' + element.trigger,
+                            name: element.localizedValue || element.trigger,
                             title: element.description,
                             icon: element.icon,
                             executeMethod: function () {
