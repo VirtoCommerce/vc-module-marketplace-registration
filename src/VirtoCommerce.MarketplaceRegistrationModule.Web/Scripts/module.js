@@ -56,7 +56,7 @@ angular.module(moduleName, [])
             metaFormsService.registerMetaFields('RegistrationRequest',
                 [
                     {
-                        name: 'status',
+                        name: 'localizedStatus',
                         title: 'marketplaceRegistration.blades.registration-request-details.labels.status',
                         valueType: 'ShortText',
                         isReadOnly: true

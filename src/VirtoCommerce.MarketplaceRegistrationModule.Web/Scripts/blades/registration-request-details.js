@@ -17,6 +17,12 @@ angular.module('virtoCommerce.marketplaceRegistrationModule')
             var bladeNavigationService = bladeUtils.bladeNavigationService;
 
             function initializeBlade(data) {
+                data.localizedStatus = data.status;
+                if (blade.stateMachineInstance
+                    && blade.stateMachineInstance.currentState
+                    && blade.stateMachineInstance.currentState.localizedValue) {
+                    data.localizedStatus = blade.stateMachineInstance.currentState.localizedValue;
+                }
                 blade.currentEntity = angular.copy(data);
                 blade.originalEntity = data;
 
