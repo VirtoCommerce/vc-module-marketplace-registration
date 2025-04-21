@@ -8,6 +8,6 @@ public class Test
     [Fact]
     public void Run_Test()
     {
-        Assert.Equal(0, 0);
+        Assert.Equal(1, 1);
     }
 }
