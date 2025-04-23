@@ -32,11 +32,13 @@ angular.module(moduleName, [])
     ])
     .run(['platformWebApp.mainMenuService', '$state',
         'platformWebApp.metaFormsService', 'virtoCommerce.stateMachineModule.stateMachineRegistrar',
+        'virtoCommerce.stateMachineModule.stateMachineTypes',
         'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService',
         'platformWebApp.pushNotificationTemplateResolver',
         'virtoCommerce.marketplaceRegistrationModule.webApi',
         function (mainMenuService, $state,
             metaFormsService, stateMachineRegistrar,
+            stateMachineTypes,
             dialogService, bladeNavigationService,
             pushNotificationTemplateResolver,
             registrationApi
@@ -184,5 +186,7 @@ angular.module(moduleName, [])
 
             });
 
+            // Registration request state machine entity type registration
+            stateMachineTypes.addType('marketplaceRegistration.state-machine-entity-types.registration-request', 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest');
         }
     ]);

@@ -51,18 +51,15 @@
         }
       }
     },
-    "state-trigger-actions": {
-      "AcceptRegistrationRequest": "Accept",
-      "ProcessRegistrationRequest": "Process",
-      "DeclineRegistrationRequest": "Decline",
-      "CompleteRegistrationRequest": "Complete"
-    },
     "dialogs": {
       "decline-request": {
         "title": "Decline confirmation",
         "message": "Are you sure you want to decline the registration request?",
         "comment-placeholder": "Enter decline reason"
       }
+    },
+    "state-machine-entity-types": {
+      "registration-request": "Seller registration request"
     }
   },
   "permissions": {
