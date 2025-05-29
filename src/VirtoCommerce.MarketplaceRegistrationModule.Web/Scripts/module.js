@@ -187,6 +187,9 @@ angular.module(moduleName, [])
             });
 
             // Registration request state machine entity type registration
-            stateMachineTypes.addType('marketplaceRegistration.state-machine-entity-types.registration-request', 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest');
+            stateMachineTypes.addType({
+                caption: 'marketplaceRegistration.state-machine-entity-types.registration-request',
+                value: 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'
+            });
         }
     ]);
