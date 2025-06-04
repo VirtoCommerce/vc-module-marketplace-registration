@@ -99,6 +99,25 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.Migrations
                         END";
             migrationBuilder.Sql(registrationRequestScript);
             #endregion ---------- RegistrationRequestStateMachineDefinition ----------
+
+            #region ---------- RegistrationRequestStateMachineDefinition localization ----------
+            var registrationRequestlocalizationScript =
+                @"DECLARE @RegistrationRequestStateMachineDefinitionId nvarchar(100)
+
+                SET @RegistrationRequestStateMachineDefinitionId = ''
+                SELECT @RegistrationRequestStateMachineDefinitionId = [Id] FROM [dbo].[StateMachineDefinition] WHERE [EntityType] = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest' AND [IsActive] = 1
+
+                IF @RegistrationRequestStateMachineDefinitionId <> ''
+                    BEGIN
+                        INSERT INTO [dbo].[StateMachineLocalization]
+                            ([Id], [DefinitionId], [Item], [Locale], [Value], [CreatedDate], [CreatedBy])
+						VALUES
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'CompleteRegistrationRequest', 'en-US', 'Complete', GETDATE(), 'Script'),
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'ProcessRegistrationRequest', 'en-US', 'Process', GETDATE(), 'Script'),
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'DeclineRegistrationRequest', 'en-US', 'Decline', GETDATE(), 'Script')
+					END";
+            migrationBuilder.Sql(registrationRequestlocalizationScript);
+            #endregion ---------- RegistrationRequestStateMachineDefinition localization ----------
         }
 
         /// <inheritdoc />
