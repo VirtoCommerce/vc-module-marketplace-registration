@@ -2358,9 +2358,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/api-client-generator@npm:^1.1.46":
-  version: 1.1.46
-  resolution: "@vc-shell/api-client-generator@npm:1.1.46"
+"@vc-shell/api-client-generator@npm:^1.1.52":
+  version: 1.1.52
+  resolution: "@vc-shell/api-client-generator@npm:1.1.52"
   dependencies:
     chalk: "npm:^2.4.2"
     cross-spawn: "npm:^7.0.3"
@@ -2370,26 +2370,26 @@ __metadata:
     vite-plugin-dts: "npm:^3.6.4"
   bin:
     api-client-generator: ./dist/api-client-generator.js
-  checksum: 10/772f5c853de9160cda46e807dfbcd6e18d3bef7d694bb162df944a755ddcf162dd092f44ee0e865a16447fe714a78dbbdba38d15a2ab98f3cc92c7154ae58bf4
+  checksum: 10/f54775b3c12819b75a32091a26ec764aa7fb4a5d94eb30ae76d70be820267d4943879e6797824eeb803ccb206a0d0aa2b25cc9deddfefe9c7df880e6976f1ab8
   languageName: node
   linkType: hard
 
-"@vc-shell/config-generator@npm:^1.1.46":
-  version: 1.1.46
-  resolution: "@vc-shell/config-generator@npm:1.1.46"
+"@vc-shell/config-generator@npm:^1.1.52":
+  version: 1.1.52
+  resolution: "@vc-shell/config-generator@npm:1.1.52"
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.3"
     vite: "npm:^6.3.3"
     vite-plugin-checker: "npm:^0.9.1"
     vite-plugin-mkcert: "npm:^1.17.1"
     vue: "npm:^3.5.13"
-  checksum: 10/131b31c45046d7554c93cdc719942a0789b9196c6d80438b09f559ea01163d2ce27d41694a5fb6c2ee4705ac29311a04c7d888cd72615dc37e9b34608f4a30e0
+  checksum: 10/3f5933da061d0220b3dd3a97fb4ab439d5a306921a161cd8267a1a1cfebbbd6243d687e4ec2edb4bf2e9ead33d43534f47dcffb6cd64dd94de9bcb0ad03c3ccc
   languageName: node
   linkType: hard
 
-"@vc-shell/framework@npm:^1.1.46":
-  version: 1.1.46
-  resolution: "@vc-shell/framework@npm:1.1.46"
+"@vc-shell/framework@npm:^1.1.52":
+  version: 1.1.52
+  resolution: "@vc-shell/framework@npm:1.1.52"
   dependencies:
     "@floating-ui/vue": "npm:^1.0.6"
     "@fontsource/plus-jakarta-sans": "npm:^5.1.0"
@@ -2429,13 +2429,13 @@ __metadata:
     vue3-application-insights: "npm:^1.1.0"
     vue3-touch-events: "npm:^4.1.8"
     whatwg-fetch: "npm:^3.6.19"
-  checksum: 10/9cb7f0933c234cfae0b09c835610a90cc609d09fd71abf3c9410ff5e6d4d9aa34c3cffd94dedf1244c47824308119a5c9e42a62b9fe12a0addd9ad38626ae90d
+  checksum: 10/f5259bfa656b29f077b9eeb76757715ec485ff8d61f27ce8d5ce3189cfc7c36c063c15e20e0d0aecc45d91d91bc38ed9c367e28470345c7033abf4b6cd09b3ec
   languageName: node
   linkType: hard
 
-"@vc-shell/release-config@npm:^1.1.46":
-  version: 1.1.46
-  resolution: "@vc-shell/release-config@npm:1.1.46"
+"@vc-shell/release-config@npm:^1.1.52":
+  version: 1.1.52
+  resolution: "@vc-shell/release-config@npm:1.1.52"
   dependencies:
     chalk: "npm:^2.4.2"
     cross-spawn: "npm:^7.0.3"
@@ -2443,14 +2443,14 @@ __metadata:
     prompts: "npm:^2.4.2"
     semver: "npm:^7.5.4"
     vite: "npm:^6.3.3"
-  checksum: 10/5a55a79cb892513f45ee4ae28ac47995cb3cbf6d6ec4d17a674a643de81e73d72b9b9dfdbae88644f06421f61f43a2456065362c32cc16cb6ab515058f68ebbc
+  checksum: 10/745e4572083c64fb99d32297b0c67c31073b2fff964995c02216b13dfee62a8c093e2c4b0f2e156943afd384a9a2b221614c62912de4f24fa949451281b97f54
   languageName: node
   linkType: hard
 
-"@vc-shell/ts-config@npm:^1.1.46":
-  version: 1.1.46
-  resolution: "@vc-shell/ts-config@npm:1.1.46"
-  checksum: 10/0454bc51a19cdf464a05d8b1f265a186eaa5de5163fcb9f2f8c33a184a3d83cb1bc3c44c1974920e21ebb0df1a9c3c950761e6d682fed700a7436e44089f38ea
+"@vc-shell/ts-config@npm:^1.1.52":
+  version: 1.1.52
+  resolution: "@vc-shell/ts-config@npm:1.1.52"
+  checksum: 10/a68f735020a635ff7043de6bd1eb09102aa8bb25bbcdd93e2dcca8c680895f4359ff67e709365bcbfaba8346b415509ffcc1fb60606647134292576980896cb1
   languageName: node
   linkType: hard
 
@@ -9425,11 +9425,11 @@ __metadata:
     "@types/node": "npm:^20.10.5"
     "@typescript-eslint/eslint-plugin": "npm:^6.16.0"
     "@typescript-eslint/parser": "npm:^6.16.0"
-    "@vc-shell/api-client-generator": "npm:^1.1.46"
-    "@vc-shell/config-generator": "npm:^1.1.46"
-    "@vc-shell/framework": "npm:^1.1.46"
-    "@vc-shell/release-config": "npm:^1.1.46"
-    "@vc-shell/ts-config": "npm:^1.1.46"
+    "@vc-shell/api-client-generator": "npm:^1.1.52"
+    "@vc-shell/config-generator": "npm:^1.1.52"
+    "@vc-shell/framework": "npm:^1.1.52"
+    "@vc-shell/release-config": "npm:^1.1.52"
+    "@vc-shell/ts-config": "npm:^1.1.52"
     "@vcmp-registration/api": "npm:1.0.0"
     "@vcmp-registration/modules": "npm:1.0.0"
     "@vitejs/plugin-vue": "npm:^5.2.3"
