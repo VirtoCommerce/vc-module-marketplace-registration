@@ -34,20 +34,17 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.Migrations
                                     {
                                     ""trigger"": ""CompleteRegistrationRequest"",
                                     ""description"": ""If you want to accept the request"",
-                                    ""toState"": ""Completed"",
-                                    ""icon"": ""far fa-check-circle""
+                                    ""toState"": ""Completed""
                                     },
                                     {
                                     ""trigger"": ""ProcessRegistrationRequest"",
                                     ""description"": ""If you want to process the request but additional steps required"",
-                                    ""toState"": ""Processing"",
-                                    ""icon"": ""fas fa-ellipsis-h""
+                                    ""toState"": ""Processing""
                                     },
                                     {
                                     ""trigger"": ""DeclineRegistrationRequest"",
                                     ""description"": ""If you want decline the request"",
-                                    ""toState"": ""Declined"",
-                                    ""icon"": ""fas fa-times-circle""
+                                    ""toState"": ""Declined""
                                     }
                                 ]
                                 },
@@ -62,14 +59,12 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.Migrations
                                     {
                                     ""trigger"": ""CompleteRegistrationRequest"",
                                     ""description"": ""If you want to accept the request"",
-                                    ""toState"": ""Completed"",
-                                    ""icon"": ""far fa-check-circle""
+                                    ""toState"": ""Completed""
                                     },
                                     {
                                     ""trigger"": ""DeclineRegistrationRequest"",
                                     ""description"": ""If you want decline the request"",
-                                    ""toState"": ""Declined"",
-                                    ""icon"": ""fas fa-times-circle""
+                                    ""toState"": ""Declined""
                                     }
                                 ]
                                 },
@@ -113,11 +108,30 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.SqlServer.Migrations
                             ([Id], [DefinitionId], [Item], [Locale], [Value], [CreatedDate], [CreatedBy])
 						VALUES
 						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'CompleteRegistrationRequest', 'en-US', 'Complete', GETDATE(), 'Script'),
-						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'ProcessRegistrationRequest', 'en-US', 'Process', GETDATE(), 'Script'),
-						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'DeclineRegistrationRequest', 'en-US', 'Decline', GETDATE(), 'Script')
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'ProcessRegistrationRequest',  'en-US', 'Process', GETDATE(), 'Script'),
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'DeclineRegistrationRequest',  'en-US', 'Decline', GETDATE(), 'Script')
 					END";
             migrationBuilder.Sql(registrationRequestlocalizationScript);
             #endregion ---------- RegistrationRequestStateMachineDefinition localization ----------
+
+            #region ---------- RegistrationRequestStateMachineDefinition Attribute ----------
+            var registrationRequestAttributeScript =
+                @"DECLARE @RegistrationRequestStateMachineDefinitionId nvarchar(100)
+
+                SET @RegistrationRequestStateMachineDefinitionId = ''
+                SELECT @RegistrationRequestStateMachineDefinitionId = [Id] FROM [dbo].[StateMachineDefinition] WHERE [EntityType] = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest' AND [IsActive] = 1
+
+                IF @RegistrationRequestStateMachineDefinitionId <> ''
+                    BEGIN
+                        INSERT INTO [dbo].[StateMachineAttribute]
+                            ([Id], [DefinitionId], [Item], [AttributeKey], [Value], [CreatedDate], [CreatedBy])
+						VALUES
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'CompleteRegistrationRequest', 'Icon', 'far fa-check-circle', GETDATE(), 'Script'),
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'ProcessRegistrationRequest',  'Icon', 'fas fa-ellipsis-h', GETDATE(), 'Script'),
+						    (CONVERT(varchar(128), NEWID()), @RegistrationRequestStateMachineDefinitionId, 'DeclineRegistrationRequest',  'Icon', 'fas fa-times-circle', GETDATE(), 'Script')
+					END";
+            migrationBuilder.Sql(registrationRequestAttributeScript);
+            #endregion ---------- RegistrationRequestStateMachineDefinition Attribute ----------
         }
 
         /// <inheritdoc />

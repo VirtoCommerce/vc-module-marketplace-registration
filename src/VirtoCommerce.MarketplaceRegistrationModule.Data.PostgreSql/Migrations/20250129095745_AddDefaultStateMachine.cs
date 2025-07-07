@@ -37,20 +37,17 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.Migrations
                               {
                                 ""trigger"": ""CompleteRegistrationRequest"",
                                 ""description"": ""If you want to accept the request"",
-                                ""toState"": ""Completed"",
-                                ""icon"": ""far fa-check-circle""
+                                ""toState"": ""Completed""
                               },
                               {
                                 ""trigger"": ""ProcessRegistrationRequest"",
                                 ""description"": ""If you want to process the request but additional steps required"",
-                                ""toState"": ""Processing"",
-                                ""icon"": ""fas fa-ellipsis-h""
+                                ""toState"": ""Processing""
                               },
                               {
                                 ""trigger"": ""DeclineRegistrationRequest"",
                                 ""description"": ""If you want decline the request"",
-                                ""toState"": ""Declined"",
-                                ""icon"": ""fas fa-times-circle""
+                                ""toState"": ""Declined""
                               }
                             ]
                           },
@@ -65,14 +62,12 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.Migrations
                               {
                                 ""trigger"": ""CompleteRegistrationRequest"",
                                 ""description"": ""If you want to accept the request"",
-                                ""toState"": ""Completed"",
-                                ""icon"": ""far fa-check-circle""
+                                ""toState"": ""Completed""
                               },
                               {
                                 ""trigger"": ""DeclineRegistrationRequest"",
                                 ""description"": ""If you want decline the request"",
-                                ""toState"": ""Declined"",
-                                ""icon"": ""fas fa-times-circle""
+                                ""toState"": ""Declined""
                               }
                             ]
                           },
@@ -102,6 +97,61 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.PostgreSql.Migrations
                 ";
             migrationBuilder.Sql(registrationRequestScript);
             #endregion ---------- RegistrationRequestStateMachineDefinition ----------
+
+            #region ---------- RegistrationRequestLocalization ----------
+            var registrationRequestLocalizationSql = @"
+            INSERT INTO ""StateMachineLocalization""
+                (""Id"",""DefinitionId"",""Item"",""Locale"",""Value"",""CreatedDate"",""CreatedBy"")
+            SELECT
+                gen_random_uuid(),
+                def.""Id"",
+                t.""Item"",
+                t.""Locale"",
+                t.""Value"",
+                now(),
+                'Script'
+            FROM (
+                VALUES
+                  ('CompleteRegistrationRequest',   'en-US', 'Complete'),
+                  ('ProcessRegistrationRequest',    'en-US', 'Process'),
+                  ('DeclineRegistrationRequest',    'en-US', 'Decline')
+            ) AS t(""Item"",""Locale"",""Value"")
+            JOIN ""StateMachineDefinition"" def
+              ON def.""EntityType"" = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'
+             AND def.""IsActive""   = TRUE
+            -- If the definition doesn’t exist yet (e.g. somebody disabled it), no rows will be inserted
+            ;
+            ";
+            migrationBuilder.Sql(registrationRequestLocalizationSql);
+            #endregion ---------- RegistrationRequestLocalization ----------
+
+            #region ---------- RegistrationRequestAttribute ----------
+            var registrationRequestAttributeSql = @"
+            INSERT INTO ""StateMachineAttribute""
+                (""Id"",""DefinitionId"",""Item"",""AttributeKey"",""Value"",""CreatedDate"",""CreatedBy"")
+            SELECT
+                gen_random_uuid(),
+                def.""Id"",
+                t.""Item"",
+                t.""AttributeKey"",
+                t.""Value"",
+                now(),
+                'Script'
+            FROM (
+                VALUES
+                  ('CompleteRegistrationRequest',   'Icon', 'far fa-check-circle'),
+                  ('ProcessRegistrationRequest',    'Icon', 'fas fa-ellipsis-h'),
+                  ('DeclineRegistrationRequest',    'Icon', 'fas fa-times-circle')
+            ) AS t(""Item"",""AttributeKey"",""Value"")
+            JOIN ""StateMachineDefinition"" def
+              ON def.""EntityType"" = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'
+             AND def.""IsActive""   = TRUE
+            -- If the definition doesn’t exist yet (e.g. somebody disabled it), no rows will be inserted
+            ;
+            ";
+            migrationBuilder.Sql(registrationRequestAttributeSql);
+            #endregion ---------- RegistrationRequestAttribute ----------
+
         }
 
         /// <inheritdoc />

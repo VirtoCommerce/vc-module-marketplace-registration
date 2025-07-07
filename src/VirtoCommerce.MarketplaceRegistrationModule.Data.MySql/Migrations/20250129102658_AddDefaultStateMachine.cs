@@ -27,20 +27,17 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.Migrations
                           {
                             ""trigger"": ""CompleteRegistrationRequest"",
                             ""description"": ""If you want to accept the request"",
-                            ""toState"": ""Completed"",
-                            ""icon"": ""far fa-check-circle""
+                            ""toState"": ""Completed""
                           },
                           {
                             ""trigger"": ""ProcessRegistrationRequest"",
                             ""description"": ""If you want to process the request but additional steps required"",
-                            ""toState"": ""Processing"",
-                            ""icon"": ""fas fa-ellipsis-h""
+                            ""toState"": ""Processing""
                           },
                           {
                             ""trigger"": ""DeclineRegistrationRequest"",
                             ""description"": ""If you want decline the request"",
-                            ""toState"": ""Declined"",
-                            ""icon"": ""fas fa-times-circle""
+                            ""toState"": ""Declined""
                           }
                         ]
                       },
@@ -55,14 +52,12 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.Migrations
                           {
                             ""trigger"": ""CompleteRegistrationRequest"",
                             ""description"": ""If you want to accept the request"",
-                            ""toState"": ""Completed"",
-                            ""icon"": ""far fa-check-circle""
+                            ""toState"": ""Completed""
                           },
                           {
                             ""trigger"": ""DeclineRegistrationRequest"",
                             ""description"": ""If you want decline the request"",
-                            ""toState"": ""Declined"",
-                            ""icon"": ""fas fa-times-circle""
+                            ""toState"": ""Declined""
                           }
                         ]
                       },
@@ -94,6 +89,45 @@ namespace VirtoCommerce.MarketplaceRegistrationModule.Data.MySql.Migrations
                 ";
             migrationBuilder.Sql(registrationRequestScript);
             #endregion ---------- RegistrationRequestStateMachineDefinition ----------
+
+            #region ---------- RegistrationRequestLocalization ----------
+            var localizationSql = @"
+                INSERT INTO StateMachineLocalization (Id, DefinitionId, Item, Locale, Value, CreatedDate, CreatedBy)
+                SELECT UUID(), d.Id, l.Item, l.Locale, l.Value, NOW(), 'Script'
+                FROM StateMachineDefinition d
+                JOIN (
+                    SELECT 'CompleteRegistrationRequest' AS Item, 'en-US' AS Locale, 'Complete'  AS Value
+                    UNION SELECT 'ProcessRegistrationRequest',    'en-US', 'Process'
+                    UNION SELECT 'DeclineRegistrationRequest',    'en-US', 'Decline'
+                ) l
+                LEFT JOIN StateMachineLocalization sl
+                    ON sl.DefinitionId = d.Id AND sl.Item = l.Item AND sl.Locale = l.Locale
+                WHERE d.EntityType = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'
+                  AND d.IsActive = 1
+                  AND sl.Id IS NULL
+                ";
+            migrationBuilder.Sql(localizationSql);
+            #endregion ---------- RegistrationRequestLocalization ----------
+
+            #region ---------- RegistrationRequestAttribute ----------
+            var attributeSql = @"
+                INSERT INTO StateMachineAttribute (Id, DefinitionId, Item, AttributeKey, Value, CreatedDate, CreatedBy)
+                SELECT UUID(), d.Id, l.Item, l.AttributeKey, l.Value, NOW(), 'Script'
+                FROM StateMachineDefinition d
+                JOIN (
+                    SELECT 'CompleteRegistrationRequest' AS Item, 'Icon' AS AttributeKey, 'far fa-check-circle' AS Value
+                    UNION SELECT 'ProcessRegistrationRequest',    'Icon', 'fas fa-ellipsis-h'
+                    UNION SELECT 'DeclineRegistrationRequest',    'Icon', 'fas fa-times-circle'
+                ) l
+                LEFT JOIN StateMachineAttribute sl
+                    ON sl.DefinitionId = d.Id AND sl.Item = l.Item AND sl.AttributeKey = l.AttributeKey
+                WHERE d.EntityType = 'VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest'
+                  AND d.IsActive = 1
+                  AND sl.Id IS NULL
+                ";
+            migrationBuilder.Sql(attributeSql);
+            #endregion ---------- RegistrationRequestAttribute ----------
+
         }
 
         /// <inheritdoc />
