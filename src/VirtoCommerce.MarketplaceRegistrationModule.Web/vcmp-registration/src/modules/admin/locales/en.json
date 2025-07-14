@@ -1,0 +1,67 @@
+{
+  "VCMP_ADMIN": {
+    "MENU": {
+      "REGISTRATION_REQUESTS": "Registration Requests"
+    },
+    "PAGES": {
+      "REGISTRATION_REQUESTS": {
+        "TITLE": "Registration Requests",
+        "SUBTITLE": "Manage vendor registration requests",
+        "LABELS": {
+          "FIRST_NAME": "First Name",
+          "LAST_NAME": "Last Name",
+          "ORGANIZATION_NAME": "Organization Name",
+          "CONTACT_EMAIL": "Contact Email",
+          "CONTACT_PHONE": "Contact Phone",
+          "STATUS": "Status",
+          "DECLINE_REASON": "Decline Reason",
+          "OPEN_VENDOR_DETAILS": "Open Vendor Details"
+        },
+        "PLACEHOLDERS": {
+          "SEARCH_KEYWORD": "Search keyword",
+          "SELECT_FILTER": "Select filter"
+        },
+        "COMMANDS": {
+          "ADD": "Add Registration Request",
+          "REFRESH": "Refresh",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel",
+          "COMPLETE": "Complete",
+          "DECLINE": "Decline",
+          "APPLY_FILTER": "Apply Filter",
+          "RESET": "Reset",
+          "DELETE": "Delete"
+        },
+        "FILTERS": {
+          "NEW_FILTER": "New Filter",
+          "NEW_FILTER_SUBTITLE": "Create new filter",
+          "EDIT_FILTER_SUBTITLE": "Edit filter",
+          "NAME": "Name",
+          "NAME_PLACEHOLDER": "Enter filter name",
+          "STATUSES": "Statuses",
+          "STATUSES_PLACEHOLDER": "Select statuses to filter"
+        }
+      },
+      "REGISTRATION_REQUEST_DETAILS": {
+        "TITLE": "Registration Request Details",
+        "SUBTITLE": "View and manage registration request",
+        "NO_DATA": "Registration request not found"
+      }
+    },
+    "DIALOGS": {
+      "DECLINE_REQUEST": {
+        "TITLE": "Decline Registration Request",
+        "MESSAGE": "Are you sure you want to decline this registration request?",
+        "COMMENT_PLACEHOLDER": "Reason for declining..."
+      }
+    },
+    "NOTIFICATIONS": {
+      "REGISTRATION_REQUEST": {
+        "TITLE": "New Registration Request",
+        "DESCRIPTION": "A new vendor registration request has been submitted",
+        "VIEW": "View",
+        "DISMISS": "Dismiss"
+      }
+    }
+  }
+}

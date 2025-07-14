@@ -1,0 +1,76 @@
+{
+  "id": "VirtoCommerce.MarketplaceRegistrationAdmin",
+  "name": "Marketplace Registration Admin",
+  "version": "3.804.0",
+  "description": "Admin interface for managing vendor registration requests",
+  "author": "VirtoCommerce",
+  "license": "MIT",
+  
+  "dependencies": {
+    "@vc-shell/framework": "^3.0.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.0.0",
+    "vue-i18n": "^9.0.0"
+  },
+  
+  "permissions": [
+    "seller:registration:read",
+    "seller:registration:write",
+    "seller:registration:delete"
+  ],
+  
+  "routes": [
+    {
+      "path": "/registration-requests",
+      "name": "RegistrationRequests",
+      "component": "pages/RegistrationRequestsList.vue",
+      "permissions": ["seller:registration:read"]
+    },
+    {
+      "path": "/registration-requests/:id",
+      "name": "RegistrationRequestDetails", 
+      "component": "pages/RegistrationRequestDetails.vue",
+      "permissions": ["seller:registration:read"]
+    }
+  ],
+  
+  "menu": [
+    {
+      "id": "registrationRequests",
+      "title": "VCMP_ADMIN.MENU.REGISTRATION_REQUESTS",
+      "icon": "fas fa-address-card",
+      "path": "/registration-requests",
+      "priority": 100,
+      "permissions": ["seller:registration:read"]
+    }
+  ],
+  
+  "locales": {
+    "en": "./locales/en.json"
+  },
+  
+  "extensions": {
+    "notifications": [
+      {
+        "type": "RegistrationRequestPushNotification",
+        "template": "components/RegistrationRequestNotification.vue",
+        "action": "/registration-requests"
+      }
+    ],
+    "stateMachine": {
+      "entityTypes": [
+        "VirtoCommerce.MarketplaceRegistrationModule.Core.Models.RegistrationRequest"
+      ],
+      "actions": [
+        {
+          "trigger": "CompleteRegistrationRequest",
+          "handler": "handleCompleteRegistration"
+        },
+        {
+          "trigger": "DeclineRegistrationRequest", 
+          "handler": "handleDeclineRegistration"
+        }
+      ]
+    }
+  }
+}
