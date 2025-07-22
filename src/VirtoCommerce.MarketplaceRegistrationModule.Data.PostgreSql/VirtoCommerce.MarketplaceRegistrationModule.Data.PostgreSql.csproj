@@ -18,7 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.Platform.Data.PostgreSql" Version="3.875.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data.PostgreSql" Version="3.897.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketplaceRegistrationModule.Data\VirtoCommerce.MarketplaceRegistrationModule.Data.csproj" />
