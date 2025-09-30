@@ -1,4 +1,4 @@
-# v3.800.13
+# v3.800.16
 name: Module CI
 
 on:
@@ -97,7 +97,7 @@ jobs:
 
       - name: Restore
         run: dotnet restore
-        
+
       - name: Build
         run: vc-build Compile -skip restore
 
@@ -187,7 +187,7 @@ jobs:
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master') || (github.ref == 'refs/heads/dev') }}
     needs: ci
-    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.800.13
+    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.800.16
     with:
       releaseSource: module
       moduleId: ${{ needs.ci.outputs.moduleId }}
