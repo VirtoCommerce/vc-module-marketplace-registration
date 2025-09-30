@@ -18,7 +18,7 @@ export const routes: RouteRecordRaw[] = [
     children: [],
     redirect: (to) => {
       if (to.name === "App") {
-        return { path: "/registration" };
+        return { path: "/demo" };
       }
       return to.path;
     },

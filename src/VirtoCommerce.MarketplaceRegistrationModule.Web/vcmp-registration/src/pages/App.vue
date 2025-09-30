@@ -14,7 +14,7 @@ import { onMounted, ref } from "vue";
 // eslint-disable-next-line import/no-unresolved
 import logoImage from "/assets/logo.svg";
 
-const isReady = ref(false);
+const isReady = ref(true);
 const version = import.meta.env.PACKAGE_VERSION;
 
 // const { isAuthenticated } = useUser();

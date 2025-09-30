@@ -1,7 +1,7 @@
 <template>
   <VcLoginForm
     :logo="customization.logo"
-    :background="background"
+    :background="customization.background"
     :title="$t('VCMP_VENDOR_REGISTRATION.TITLE')"
   >
     <VcForm
@@ -32,7 +32,7 @@
             :loading="field.name === 'contactEmail' && validateEmailLoading"
             v-bind="field.props || {}"
             @update:model-value="
-              (value) => {
+              (value: any) => {
                 handleChange(value);
                 updateFormData(field.name, value);
               }
@@ -171,6 +171,7 @@ const onSubmit = async () => {
 const customization = computed(() => {
   return {
     logo: !customizationLoading.value ? uiSettings.value?.logo || props.logo : "",
+    background: props.background,
   };
 });
 </script>

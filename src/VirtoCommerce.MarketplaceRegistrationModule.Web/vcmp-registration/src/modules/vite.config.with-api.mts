@@ -1,6 +1,4 @@
-import { defineConfig } from "vite";
-import { resolve, join, dirname } from "node:path";
-import vue from "@vitejs/plugin-vue";
+import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getDynamicModuleConfiguration } from "@vc-shell/config-generator";
 
@@ -12,8 +10,14 @@ export default getDynamicModuleConfiguration({
     copyPublicDir: false,
     sourcemap: true,
     minify: false,
+    assetsInlineLimit: 4096, // Inline small assets as base64
     lib: {
       entry: resolve(__dirname, "./index.ts"),
+    },
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]',
+      },
     },
   },
   compatibility: {

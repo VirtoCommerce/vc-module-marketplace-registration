@@ -1,4 +1,5 @@
 import { ref, computed } from "vue";
+import { useExtensionData } from "@vc-shell/framework";
 
 export interface IFormField {
   name: string;
@@ -13,103 +14,37 @@ export interface IFormField {
   priority?: number;
 }
 
-export interface IRegistrationFormConfig {
-  fields: IFormField[];
-}
-
-const defaultFields: IFormField[] = [
-  {
-    name: "firstName",
-    type: "text",
-    component: "VcInput",
-    label: "VCMP_VENDOR_REGISTRATION.LABELS.FIRST_NAME",
-    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.FIRST_NAME",
-    required: true,
-    rules: "required",
-    priority: 10,
-  },
-  {
-    name: "lastName",
-    type: "text",
-    component: "VcInput",
-    label: "VCMP_VENDOR_REGISTRATION.LABELS.LAST_NAME",
-    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.LAST_NAME",
-    required: true,
-    rules: "required",
-    priority: 20,
-  },
-  {
-    name: "organizationName",
-    type: "text",
-    component: "VcInput",
-    label: "VCMP_VENDOR_REGISTRATION.LABELS.ORGANIZATION",
-    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.ORGANIZATION",
-    required: true,
-    rules: "required",
-    priority: 30,
-  },
-  {
-    name: "contactEmail",
-    type: "email",
-    component: "VcInput",
-    label: "VCMP_VENDOR_REGISTRATION.LABELS.EMAIL",
-    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.EMAIL",
-    hint: "VCMP_VENDOR_REGISTRATION.HINTS.EMAIL",
-    required: true,
-    rules: "emailWithServerValidation",
-    priority: 40,
-  },
-  {
-    name: "contactPhone",
-    type: "tel",
-    component: "VcInput",
-    label: "VCMP_VENDOR_REGISTRATION.LABELS.PHONE",
-    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.PHONE",
-    rules: "phone",
-    priority: 50,
-  },
-];
-
-const formConfig = ref<IRegistrationFormConfig>({
-  fields: [...defaultFields],
-});
-
-const formData = ref<Record<string, unknown>>({});
-
-defaultFields.forEach((field) => {
-  formData.value[field.name] = "";
-});
-
 export function useRegistrationForm() {
-  const extendForm = (newFields: IFormField[]) => {
-    formConfig.value.fields = [...formConfig.value.fields, ...newFields].sort(
-      (a, b) => (a.priority || 0) - (b.priority || 0),
-    );
+  const { data, updateData, getValue, setValue } = useExtensionData("registration-form");
 
-    newFields.forEach((field) => {
-      if (!(field.name in formData.value)) {
-        formData.value[field.name] = "";
-      }
+  // Local form data
+  const formData = ref<Record<string, unknown>>({});
+
+  // Fields from extension system
+  const formConfig = computed(() => ({
+    fields: (data.value.fields || []).sort((a: IFormField, b: IFormField) => (a.priority || 0) - (b.priority || 0)),
+  }));
+
+  const extendForm = (newFields: IFormField[]) => {
+    const currentFields = data.value.fields || [];
+    updateData({
+      fields: [...currentFields, ...newFields],
     });
   };
 
   const removeField = (fieldName: string) => {
-    formConfig.value.fields = formConfig.value.fields.filter((field) => field.name !== fieldName);
-
-    delete formData.value[fieldName];
+    const currentFields = data.value.fields || [];
+    updateData({
+      fields: currentFields.filter((field: IFormField) => field.name !== fieldName),
+    });
   };
 
   const updateField = (fieldName: string, updates: Partial<IFormField>) => {
-    const fieldIndex = formConfig.value.fields.findIndex((field) => field.name === fieldName);
-    if (fieldIndex !== -1) {
-      formConfig.value.fields[fieldIndex] = {
-        ...formConfig.value.fields[fieldIndex],
-        ...updates,
-      };
-      if ("priority" in updates) {
-        formConfig.value.fields = formConfig.value.fields.sort((a, b) => (a.priority || 0) - (b.priority || 0));
-      }
-    }
+    const currentFields = data.value.fields || [];
+    const updatedFields = currentFields.map((field: IFormField) =>
+      field.name === fieldName ? { ...field, ...updates } : field,
+    );
+    updateData({ fields: updatedFields });
   };
 
   const updateFormData = (fieldName: string, value: unknown) => {
@@ -120,8 +55,8 @@ export function useRegistrationForm() {
     return formData.value;
   };
 
-  const setFormData = (data: Record<string, unknown>) => {
-    formData.value = { ...formData.value, ...data };
+  const setFormData = (newData: Record<string, unknown>) => {
+    formData.value = { ...formData.value, ...newData };
   };
 
   const clearFormData = () => {
@@ -129,7 +64,7 @@ export function useRegistrationForm() {
   };
 
   return {
-    formConfig: computed(() => formConfig.value),
+    formConfig,
     formData: computed(() => formData.value),
     extendForm,
     removeField,

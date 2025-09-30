@@ -1,9 +1,8 @@
 import * as locales from "./locales";
-import { i18n } from "@vc-shell/framework";
+import { i18n, useExtensionData, useExtensionSlot } from "@vc-shell/framework";
 import { Router } from "vue-router";
 import { App } from "vue";
 import { routes } from "./router";
-import { useRegistrationForm } from "./composables/useRegistrationForm";
 import { RegistrationButton } from "./components";
 
 export default {
@@ -16,6 +15,9 @@ export default {
     }
 
     routes.forEach((route) => {
+      if (route.name === "DemoRegistration") {
+        return;
+      }
       routerInstance.addRoute(route);
     });
 
@@ -25,13 +27,73 @@ export default {
         i18n.global.mergeLocaleMessage(key, message);
       });
     }
-  },
-  extensions: {
-    inbound: {
-      "registration-form": useRegistrationForm(),
-    },
-    outbound: {
-      "login-after-form": [{ id: "RegistrationButton", component: RegistrationButton }],
-    },
+
+    const { addComponent } = useExtensionSlot("login-after-form");
+
+    addComponent({
+      id: "registration-button",
+      component: RegistrationButton,
+      props: {
+        text: "Register",
+      },
+      priority: 10,
+    });
+
+    const { updateData } = useExtensionData("registration-form");
+
+    updateData({
+      fields: [
+        {
+          name: "firstName",
+          type: "text",
+          component: "VcInput",
+          label: "VCMP_VENDOR_REGISTRATION.LABELS.FIRST_NAME",
+          placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.FIRST_NAME",
+          required: true,
+          rules: "required",
+          priority: 10,
+        },
+        {
+          name: "lastName",
+          type: "text",
+          component: "VcInput",
+          label: "VCMP_VENDOR_REGISTRATION.LABELS.LAST_NAME",
+          placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.LAST_NAME",
+          required: true,
+          rules: "required",
+          priority: 20,
+        },
+        {
+          name: "organizationName",
+          type: "text",
+          component: "VcInput",
+          label: "VCMP_VENDOR_REGISTRATION.LABELS.ORGANIZATION",
+          placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.ORGANIZATION",
+          required: true,
+          rules: "required",
+          priority: 30,
+        },
+        {
+          name: "contactEmail",
+          type: "email",
+          component: "VcInput",
+          label: "VCMP_VENDOR_REGISTRATION.LABELS.EMAIL",
+          placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.EMAIL",
+          hint: "VCMP_VENDOR_REGISTRATION.HINTS.EMAIL",
+          required: true,
+          rules: "emailWithServerValidation",
+          priority: 40,
+        },
+        {
+          name: "contactPhone",
+          type: "tel",
+          component: "VcInput",
+          label: "VCMP_VENDOR_REGISTRATION.LABELS.PHONE",
+          placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.PHONE",
+          rules: "phone",
+          priority: 50,
+        },
+      ],
+    });
   },
 };

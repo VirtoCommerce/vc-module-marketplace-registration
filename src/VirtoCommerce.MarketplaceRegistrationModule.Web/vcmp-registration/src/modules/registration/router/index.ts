@@ -1,18 +1,22 @@
 import { RouteRecordRaw } from "vue-router";
 import Registration from "../pages/registration.vue";
-// eslint-disable-next-line import/no-unresolved
-import whiteLogoImage from "/assets/logo-white.svg";
-// eslint-disable-next-line import/no-unresolved
-import bgImage from "/assets/background.jpg";
+import DemoRegistration from "../pages/demo.vue";
+import whiteLogoImage from "../../../../public/assets/logo-white.svg";
+import bgImage from "../../../../public/assets/background.jpg";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "/registration",
     name: "Registration",
     component: Registration,
-    props: (route) => ({
+    props: () => ({
       logo: whiteLogoImage,
       background: bgImage,
     }),
+  },
+  {
+    path: "/demo",
+    name: "DemoRegistration",
+    component: DemoRegistration,
   },
 ];
