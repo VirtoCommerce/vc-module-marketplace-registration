@@ -21,6 +21,6 @@ export default getDynamicModuleConfiguration({
     },
   },
   compatibility: {
-    framework: "^1.1.0",
+    framework: "^1.1.83",
   },
 });
