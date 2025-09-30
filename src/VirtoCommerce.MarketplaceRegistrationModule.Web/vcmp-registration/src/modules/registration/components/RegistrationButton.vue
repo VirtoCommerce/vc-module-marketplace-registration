@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-justify-between tw-items-center tw-pt-2">
+  <div class="tw-flex tw-justify-center tw-items-center tw-pt-4">
     <VcButton
       :variant="variant"
       @click="onRegisterClick"
