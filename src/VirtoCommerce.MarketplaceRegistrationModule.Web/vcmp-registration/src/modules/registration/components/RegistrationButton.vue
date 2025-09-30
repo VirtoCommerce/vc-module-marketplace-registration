@@ -1,9 +1,11 @@
 <template>
-  <VcButton
-    :variant="variant"
-    @click="onRegisterClick"
-    >{{ text }}</VcButton
-  >
+  <div class="tw-flex tw-justify-between tw-items-center tw-pt-2">
+    <VcButton
+      :variant="variant"
+      @click="onRegisterClick"
+      >{{ text }}</VcButton
+    >
+  </div>
 </template>
 
 <script setup lang="ts">
