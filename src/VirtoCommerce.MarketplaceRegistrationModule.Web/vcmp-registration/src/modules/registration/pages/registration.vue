@@ -1,5 +1,5 @@
 <template>
-  <VcLoginForm
+  <VcAuthLayout
     :logo="customization.logo"
     :background="customization.background"
     :title="$t('VCMP_VENDOR_REGISTRATION.TITLE')"
@@ -43,6 +43,7 @@
 
       <div class="registration-form__button">
         <VcButton
+          class="tw-w-full"
           type="submit"
           :loading="registrationLoading"
           :disabled="registrationLoading || !isValid"
@@ -62,7 +63,7 @@
     <div v-else>
       <p class="registration-form__success">{{ $t("VCMP_VENDOR_REGISTRATION.SUCCESS") }}</p>
     </div>
-  </VcLoginForm>
+  </VcAuthLayout>
 </template>
 
 <script lang="ts" setup>
