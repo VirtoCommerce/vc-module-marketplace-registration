@@ -1,5 +1,4 @@
 import { ref, computed } from "vue";
-import { useExtensionData } from "@vc-shell/framework";
 
 export interface IFormField {
   name: string;
@@ -14,37 +13,79 @@ export interface IFormField {
   priority?: number;
 }
 
-export function useRegistrationForm() {
-  const { data, updateData, getValue, setValue } = useExtensionData("registration-form");
+const defaultFields: IFormField[] = [
+  {
+    name: "firstName",
+    type: "text",
+    component: "VcInput",
+    label: "VCMP_VENDOR_REGISTRATION.LABELS.FIRST_NAME",
+    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.FIRST_NAME",
+    required: true,
+    rules: "required",
+    priority: 10,
+  },
+  {
+    name: "lastName",
+    type: "text",
+    component: "VcInput",
+    label: "VCMP_VENDOR_REGISTRATION.LABELS.LAST_NAME",
+    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.LAST_NAME",
+    required: true,
+    rules: "required",
+    priority: 20,
+  },
+  {
+    name: "organizationName",
+    type: "text",
+    component: "VcInput",
+    label: "VCMP_VENDOR_REGISTRATION.LABELS.ORGANIZATION",
+    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.ORGANIZATION",
+    required: true,
+    rules: "required",
+    priority: 30,
+  },
+  {
+    name: "contactEmail",
+    type: "email",
+    component: "VcInput",
+    label: "VCMP_VENDOR_REGISTRATION.LABELS.EMAIL",
+    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.EMAIL",
+    hint: "VCMP_VENDOR_REGISTRATION.HINTS.EMAIL",
+    required: true,
+    rules: "emailWithServerValidation",
+    priority: 40,
+  },
+  {
+    name: "contactPhone",
+    type: "tel",
+    component: "VcInput",
+    label: "VCMP_VENDOR_REGISTRATION.LABELS.PHONE",
+    placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.PHONE",
+    rules: "phone",
+    priority: 50,
+  },
+];
 
-  // Local form data
+// Module-level reactive state — other plugins can extend via extendForm()
+const fields = ref<IFormField[]>([...defaultFields]);
+
+export function useRegistrationForm() {
   const formData = ref<Record<string, unknown>>({});
 
-  // Fields from extension system
   const formConfig = computed(() => ({
-    fields: (data.value.fields || []).sort((a: IFormField, b: IFormField) => (a.priority || 0) - (b.priority || 0)),
+    fields: [...fields.value].sort((a, b) => (a.priority || 0) - (b.priority || 0)),
   }));
 
   const extendForm = (newFields: IFormField[]) => {
-    const currentFields = data.value.fields || [];
-    updateData({
-      fields: [...currentFields, ...newFields],
-    });
+    fields.value.push(...newFields);
   };
 
   const removeField = (fieldName: string) => {
-    const currentFields = data.value.fields || [];
-    updateData({
-      fields: currentFields.filter((field: IFormField) => field.name !== fieldName),
-    });
+    fields.value = fields.value.filter((f) => f.name !== fieldName);
   };
 
   const updateField = (fieldName: string, updates: Partial<IFormField>) => {
-    const currentFields = data.value.fields || [];
-    const updatedFields = currentFields.map((field: IFormField) =>
-      field.name === fieldName ? { ...field, ...updates } : field,
-    );
-    updateData({ fields: updatedFields });
+    fields.value = fields.value.map((f) => (f.name === fieldName ? { ...f, ...updates } : f));
   };
 
   const updateFormData = (fieldName: string, value: unknown) => {
