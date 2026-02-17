@@ -35,7 +35,7 @@ export default {
       component: RegistrationButton,
       props: {
         text: "Register",
-        variant: 'secondary',
+        variant: "secondary",
       },
       priority: 10,
       meta: { type: "action", intent: "navigate" },
