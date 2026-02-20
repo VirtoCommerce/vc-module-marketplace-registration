@@ -11,7 +11,7 @@ export const routes: RouteRecordRaw[] = [
     component: Registration,
     props: () => ({
       logo: whiteLogoImage,
-      background: bgImage,
+      // background: bgImage,
     }),
   },
   {

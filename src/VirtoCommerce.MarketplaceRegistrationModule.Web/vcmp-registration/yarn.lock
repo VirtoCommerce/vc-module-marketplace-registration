@@ -3364,17 +3364,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vcmp-registration/api@npm:1.0.0, @vcmp-registration/api@workspace:src/api_client":
+"@vcmp-registration/api@npm:1.0.1, @vcmp-registration/api@npm:^1.0.1, @vcmp-registration/api@workspace:src/api_client":
   version: 0.0.0-use.local
   resolution: "@vcmp-registration/api@workspace:src/api_client"
   languageName: unknown
   linkType: soft
 
-"@vcmp-registration/modules@npm:1.0.0, @vcmp-registration/modules@workspace:src/modules":
+"@vcmp-registration/modules@npm:^1.0.1, @vcmp-registration/modules@workspace:src/modules":
   version: 0.0.0-use.local
   resolution: "@vcmp-registration/modules@workspace:src/modules"
   dependencies:
-    "@vcmp-registration/api": "npm:1.0.0"
+    "@vcmp-registration/api": "npm:1.0.1"
     vue: "npm:^3.4.19"
   languageName: unknown
   linkType: soft
@@ -12872,8 +12872,8 @@ __metadata:
     "@vc-shell/framework": "npm:1.2.4-beta.2"
     "@vc-shell/release-config": "npm:1.2.4-beta.2"
     "@vc-shell/ts-config": "npm:1.2.4-beta.2"
-    "@vcmp-registration/api": "npm:1.0.0"
-    "@vcmp-registration/modules": "npm:1.0.0"
+    "@vcmp-registration/api": "npm:^1.0.1"
+    "@vcmp-registration/modules": "npm:^1.0.1"
     "@vitejs/plugin-vue": "npm:^5.2.3"
     "@vue/eslint-config-prettier": "npm:^9.0.0"
     "@vue/eslint-config-typescript": "npm:^12.0.0"

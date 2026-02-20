@@ -1,10 +1,12 @@
 <template>
-  <div class="tw-flex tw-justify-center tw-items-center tw-pt-4 tw-w-full">
+  <div class="tw-flex tw-justify-center tw-items-center tw-gap-1 tw-w-full tw-text-sm">
+    <span class="tw-text-[color:var(--neutrals-500)]">{{ label || $t("VCMP_VENDOR_REGISTRATION.LOGIN_BUTTON.LABEL") }}</span>
     <VcButton
-      :variant="variant"
+      variant="link"
       @click="onRegisterClick"
-      >{{ text }}</VcButton
     >
+      {{ text || $t("VCMP_VENDOR_REGISTRATION.LOGIN_BUTTON.TEXT") }}
+    </VcButton>
   </div>
 </template>
 
@@ -13,8 +15,8 @@ import { VcButton } from "@vc-shell/framework";
 import { useRouter } from "vue-router";
 
 export interface Props {
-  text: string;
-  variant?: "primary" | "secondary";
+  label?: string;
+  text?: string;
 }
 
 defineProps<Props>();

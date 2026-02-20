@@ -3,8 +3,5 @@ import RegistrationButton from "../components/RegistrationButton.vue";
 </script>
 
 <template>
-  <RegistrationButton
-    text="Registration"
-    variant="secondary"
-  />
+  <RegistrationButton variant="secondary" />
 </template>

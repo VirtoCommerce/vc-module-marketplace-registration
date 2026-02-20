@@ -34,6 +34,10 @@
       "PARSING_ERROR": "Error parsing server response",
       "REGISTRATION_REQUEST_ALREADY_EXISTS": "Registration request already exists",
       "REGISTRATION_ERROR": "Registration error: "
+    },
+    "LOGIN_BUTTON": {
+      "LABEL": "Don't have an account?",
+      "TEXT": "Sign up"
     }
   }
 }

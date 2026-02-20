@@ -33,10 +33,7 @@ export default {
     add({
       id: "registration-button",
       component: RegistrationButton,
-      props: {
-        text: "Register",
-        variant: "secondary",
-      },
+      props: {},
       priority: 10,
       meta: { type: "action", intent: "navigate" },
     });
