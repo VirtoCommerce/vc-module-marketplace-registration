@@ -29,7 +29,7 @@
   <moduleType>VirtoCommerce.MarketplaceRegistrationModule.Web.Module, VirtoCommerce.MarketplaceRegistrationModule.Web</moduleType>
 
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2025 VirtoCommerce. All rights reserved</copyright>
+  <copyright>Copyright © 2025-2026 VirtoCommerce. All rights reserved</copyright>
   <tags>VirtoCommerce Marketplace Registration module</tags>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
   <frontendModules>
