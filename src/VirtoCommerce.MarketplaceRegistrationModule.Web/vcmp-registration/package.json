@@ -17,8 +17,7 @@
     "release": "tsx scripts/release.ts --dry"
   },
   "workspaces": [
-    "src/api_client",
-    "src/modules"
+    "src/api_client"
   ],
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
@@ -62,7 +61,6 @@
     "@vc-shell/framework": "^2.0.0-alpha.28",
     "@vc-shell/mf-module": "^2.0.0-alpha.28",
     "@vcmp-registration/api": "^1.0.1",
-    "@vcmp-registration/modules": "^1.0.1",
     "@vueuse/core": "^10.7.1",
     "@vueuse/integrations": "^10.7.1",
     "cross-spawn": "^7.0.3",
