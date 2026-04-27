@@ -27,7 +27,10 @@
       "EMAIL_REQUIRED": "Email is required",
       "EMAIL_INVALID": "Invalid email format",
       "EMAIL_ALREADY_EXISTS": "The e-mail already used in the system",
-      "EMAIL_VALIDATION_ERROR": "Email validation error"
+      "EMAIL_VALIDATION_ERROR": "Email validation error",
+      "ORGANIZATION_REQUIRED": "Organization name is required",
+      "ORGANIZATION_ALREADY_EXISTS": "A seller with this organization name already exists",
+      "ORGANIZATION_VALIDATION_ERROR": "Organization name validation error"
     },
     "ERRORS": {
       "DEFAULT_ERROR": "An error occurred during registration",

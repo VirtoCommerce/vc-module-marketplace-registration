@@ -29,7 +29,9 @@
             :error="!!errors.length"
             :error-message="errorMessage"
             :required="field.required"
-            :loading="field.name === 'contactEmail' && validateEmailLoading"
+            :loading="
+              (field.name === 'contactEmail' || field.name === 'organizationName') && validationLoading
+            "
             v-bind="field.props || {}"
             @update:model-value="
               (value: any) => {
@@ -74,8 +76,6 @@ import { useRegistration, useRegistrationForm } from "../composables";
 import { CreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
 
-import { VcAuthLayout, VcButton, VcForm, VcHint } from "@vc-shell/framework/ui";
-
 export interface Props {
   logo: string;
   background: string;
@@ -97,7 +97,12 @@ const registerResult = ref({
 
 const { t } = useI18n({ useScope: "global" });
 
-const { register, loading: registrationLoading, validateEmail, validateEmailLoading } = useRegistration();
+const {
+  register,
+  loading: registrationLoading,
+  validateRegistrationRequest,
+  validationLoading,
+} = useRegistration();
 
 const { formConfig, formData, updateFormData, clearFormData } = useRegistrationForm();
 
@@ -127,7 +132,7 @@ defineRule("emailWithServerValidation", async (value: string) => {
   }
 
   try {
-    const result = await validateEmail(formData.value);
+    const result = await validateRegistrationRequest(formData.value);
 
     const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
 
@@ -141,6 +146,27 @@ defineRule("emailWithServerValidation", async (value: string) => {
   } catch (error) {
     console.error("Email validation error:", error);
     return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR");
+  }
+
+  return true;
+});
+
+defineRule("organizationNameWithServerValidation", async (value: string) => {
+  if (!value) {
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_REQUIRED");
+  }
+
+  try {
+    const result = await validateRegistrationRequest(formData.value);
+
+    const nameValidationError = result.find((error) => error.propertyName === "Name");
+
+    if (nameValidationError && nameValidationError.errorCode === "SELLER_NAME_ALREADY_EXISTS") {
+      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_ALREADY_EXISTS");
+    }
+  } catch (error) {
+    console.error("Organization name validation error:", error);
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_VALIDATION_ERROR");
   }
 
   return true;
