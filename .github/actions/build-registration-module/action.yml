@@ -11,6 +11,11 @@ runs:
       working-directory: src/VirtoCommerce.MarketplaceRegistrationModule.Web/vcmp-registration
       run: yarn
 
+    - name: Compile API client (produces src/api_client/dist consumed by exports)
+      shell: bash
+      working-directory: src/VirtoCommerce.MarketplaceRegistrationModule.Web/vcmp-registration/src/api_client
+      run: npx tsc
+
     - name: Build Registration Module
       shell: bash
       working-directory:  src/VirtoCommerce.MarketplaceRegistrationModule.Web/vcmp-registration
