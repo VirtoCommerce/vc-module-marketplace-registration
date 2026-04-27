@@ -75,6 +75,7 @@ import { computed, ref } from "vue";
 import { useRegistration, useRegistrationForm } from "../composables";
 import { CreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
+import { VcAuthLayout, VcButton, VcForm, VcHint } from "@vc-shell/framework/ui";
 
 export interface Props {
   logo: string;
