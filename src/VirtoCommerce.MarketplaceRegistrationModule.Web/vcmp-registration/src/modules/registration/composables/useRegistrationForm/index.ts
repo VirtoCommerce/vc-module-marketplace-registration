@@ -1,9 +1,10 @@
-import { ref, computed } from "vue";
+import { ref, computed, type Component } from "vue";
+import { VcInput } from "@vc-shell/framework/ui";
 
 export interface IFormField {
   name: string;
   type: string;
-  component: string;
+  component: Component;
   label?: string;
   placeholder?: string;
   hint?: string;
@@ -17,7 +18,7 @@ const defaultFields: IFormField[] = [
   {
     name: "firstName",
     type: "text",
-    component: "VcInput",
+    component: VcInput,
     label: "VCMP_VENDOR_REGISTRATION.LABELS.FIRST_NAME",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.FIRST_NAME",
     required: true,
@@ -27,7 +28,7 @@ const defaultFields: IFormField[] = [
   {
     name: "lastName",
     type: "text",
-    component: "VcInput",
+    component: VcInput,
     label: "VCMP_VENDOR_REGISTRATION.LABELS.LAST_NAME",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.LAST_NAME",
     required: true,
@@ -37,7 +38,7 @@ const defaultFields: IFormField[] = [
   {
     name: "organizationName",
     type: "text",
-    component: "VcInput",
+    component: VcInput,
     label: "VCMP_VENDOR_REGISTRATION.LABELS.ORGANIZATION",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.ORGANIZATION",
     required: true,
@@ -47,7 +48,7 @@ const defaultFields: IFormField[] = [
   {
     name: "contactEmail",
     type: "email",
-    component: "VcInput",
+    component: VcInput,
     label: "VCMP_VENDOR_REGISTRATION.LABELS.EMAIL",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.EMAIL",
     hint: "VCMP_VENDOR_REGISTRATION.HINTS.EMAIL",
@@ -58,7 +59,7 @@ const defaultFields: IFormField[] = [
   {
     name: "contactPhone",
     type: "tel",
-    component: "VcInput",
+    component: VcInput,
     label: "VCMP_VENDOR_REGISTRATION.LABELS.PHONE",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.PHONE",
     rules: "phone",
