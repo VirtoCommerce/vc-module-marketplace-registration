@@ -2,12 +2,27 @@
   "name": "@vcmp-registration/api",
   "version": "1.0.1",
   "files": [
+    "dist",
     "package.json"
   ],
   "exports": {
     "./marketplaceregistration": {
-      "import": "./virtocommerce.marketplaceregistration.js",
-      "types": "./types/virtocommerce.marketplaceregistration.d.ts"
+      "import": "./dist/virtocommerce.marketplaceregistration.js",
+      "types": "./dist/types/virtocommerce.marketplaceregistration.d.ts"
+    },
+    "./virtocommerce.marketplaceregistration": {
+      "import": "./dist/virtocommerce.marketplaceregistration.js",
+      "types": "./dist/types/virtocommerce.marketplaceregistration.d.ts"
+    },
+    ".": {
+      "import": "./dist/virtocommerce.marketplaceregistration.js",
+      "types": "./dist/types/virtocommerce.marketplaceregistration.d.ts"
     }
-  }
+  },
+  "apiClientGenerator": {
+    "version": "1.1.2",
+    "generatedAt": "2026-04-27T06:21:54.470Z"
+  },
+  "module": "./dist/virtocommerce.marketplaceregistration.js",
+  "types": "./dist/types/virtocommerce.marketplaceregistration.d.ts"
 }

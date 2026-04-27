@@ -71,8 +71,10 @@ import { useSettings } from "@vc-shell/framework";
 import { Field, useForm, useIsFormValid, defineRule } from "vee-validate";
 import { computed, ref } from "vue";
 import { useRegistration, useRegistrationForm } from "../composables";
-import { ICreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
+import { CreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
+
+import { VcAuthLayout, VcButton, VcForm, VcHint } from "@vc-shell/framework/ui";
 
 export interface Props {
   logo: string;
@@ -151,7 +153,7 @@ const onSubmit = async () => {
 
   if (valid) {
     try {
-      await register(formData.value as unknown as ICreateRegistrationRequestCommand);
+      await register(formData.value as unknown as CreateRegistrationRequestCommand);
 
       registerResult.value.isSuccess = true;
 

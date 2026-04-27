@@ -15,7 +15,7 @@ The module provides an extension system that allows you to customize the registr
 First, get access to the registration form extensions using the extensions helper:
 
 ```typescript
-import { extensionsHelper } from '@vc-shell/framework';
+import { extensionsHelper } from "@vc-shell/framework";
 
 const registrationFormExtensions = extensionsHelper.getInboundExtensions("registration", "registration-form");
 ```
@@ -37,8 +37,8 @@ registrationFormExtensions?.extendForm([
     priority: 25, // Controls field position
     props: {
       // Additional props for the component
-    }
-  }
+    },
+  },
 ]);
 ```
 
@@ -47,8 +47,8 @@ registrationFormExtensions?.extendForm([
 Here's an example of adding a file upload field with custom handling:
 
 ```typescript
-import { VcFileUpload } from '@vc-shell/framework';
-import { useAssets } from '@vc-shell/framework';
+import { VcFileUpload } from "@vc-shell/framework";
+import { useAssets } from "@vc-shell/framework";
 
 registrationFormExtensions?.extendForm([
   {
@@ -57,10 +57,10 @@ registrationFormExtensions?.extendForm([
     priority: 60,
     props: {
       variant: "file-upload",
-      onUpload: async(files) => {
+      onUpload: async (files) => {
         const { upload } = useAssets();
-        const assets = await upload(files, 'test');
-        
+        const assets = await upload(files, "test");
+
         // Update form data with uploaded assets
         registrationFormExtensions?.updateFormData("attachments", assets);
       },
@@ -75,21 +75,22 @@ The registration form extensions provide several methods to manage the form:
 
 ```typescript
 const {
-  extendForm,      // Add new fields
-  removeField,     // Remove a field by name
-  updateField,     // Update field configuration
-  updateFormData,  // Update field value
-  getFormData,     // Get current form data
-  setFormData,     // Set multiple field values
-  clearFormData,   // Clear all form data
-  formData,        // Reactive form data object
-  formConfig       // Reactive form configuration
+  extendForm, // Add new fields
+  removeField, // Remove a field by name
+  updateField, // Update field configuration
+  updateFormData, // Update field value
+  getFormData, // Get current form data
+  setFormData, // Set multiple field values
+  clearFormData, // Clear all form data
+  formData, // Reactive form data object
+  formConfig, // Reactive form configuration
 } = registrationFormExtensions;
 ```
 
 ### Field Priorities
 
 The default fields are positioned with priorities in steps of 10:
+
 - firstName: 10
 - lastName: 20
 - organizationName: 30
@@ -103,11 +104,15 @@ When adding new fields, use priorities accordingly to position them where needed
 You can watch form data changes:
 
 ```typescript
-import { watch } from 'vue';
+import { watch } from "vue";
 
-watch(() => registrationFormExtensions?.formData.value, (newData) => {
-  console.log('Form data changed:', newData);
-}, { deep: true });
+watch(
+  () => registrationFormExtensions?.formData.value,
+  (newData) => {
+    console.log("Form data changed:", newData);
+  },
+  { deep: true },
+);
 ```
 
 ## TypeScript Support

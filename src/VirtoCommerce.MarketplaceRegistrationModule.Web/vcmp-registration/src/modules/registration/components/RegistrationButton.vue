@@ -1,6 +1,8 @@
 <template>
   <div class="tw-flex tw-justify-center tw-items-center tw-gap-1 tw-w-full tw-text-sm">
-    <span class="tw-text-[color:var(--neutrals-500)]">{{ label || $t("VCMP_VENDOR_REGISTRATION.LOGIN_BUTTON.LABEL") }}</span>
+    <span class="tw-text-[color:var(--neutrals-500)]">{{
+      label || $t("VCMP_VENDOR_REGISTRATION.LOGIN_BUTTON.LABEL")
+    }}</span>
     <VcButton
       variant="link"
       @click="onRegisterClick"
@@ -11,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { VcButton } from "@vc-shell/framework";
+import { VcButton } from "@vc-shell/framework/ui";
 import { useRouter } from "vue-router";
 
 export interface Props {

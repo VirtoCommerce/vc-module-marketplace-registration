@@ -2,11 +2,9 @@ import { computed, ref, ComputedRef } from "vue";
 import { useApiClient, useAsync, useLoading } from "@vc-shell/framework";
 import {
   VcmpRegistrationRequestClient,
-  ICreateRegistrationRequestCommand,
   CreateRegistrationRequestCommand,
   RegistrationRequest,
   ValidateRegistrationRequestQuery,
-  IRegistrationRequest,
   ValidationFailure,
 } from "@vcmp-registration/api/marketplaceregistration";
 
@@ -14,8 +12,8 @@ export interface IUseRegistration {
   item: ComputedRef<RegistrationRequest | null>;
   loading: ComputedRef<boolean>;
   validateEmailLoading: ComputedRef<boolean>;
-  register: (payload: ICreateRegistrationRequestCommand) => Promise<RegistrationRequest>;
-  validateEmail: (query: IRegistrationRequest) => Promise<ValidationFailure[]>;
+  register: (payload: CreateRegistrationRequestCommand) => Promise<RegistrationRequest>;
+  validateEmail: (query: RegistrationRequest) => Promise<ValidationFailure[]>;
 }
 
 export default (): IUseRegistration => {
@@ -23,23 +21,27 @@ export default (): IUseRegistration => {
 
   const item = ref<RegistrationRequest | null>(null);
 
-  const { loading: itemLoading, action: register } = useAsync<ICreateRegistrationRequestCommand, RegistrationRequest>(
+  const { loading: itemLoading, action: register } = useAsync<CreateRegistrationRequestCommand, RegistrationRequest>(
     async (payload) => {
       const client = await getApiClient();
-      const command = new CreateRegistrationRequestCommand(payload);
+      const command = {
+        ...payload,
+      } as CreateRegistrationRequestCommand;
       const result = await client.createRegistrationRequest(command);
 
       return result;
     },
   );
 
-  const {loading: validateEmailLoading, action: validateEmail} = useAsync<IRegistrationRequest, ValidationFailure[]>(
+  const { loading: validateEmailLoading, action: validateEmail } = useAsync<RegistrationRequest, ValidationFailure[]>(
     async (query) => {
       const client = await getApiClient();
 
-      const command = new ValidateRegistrationRequestQuery({
-        registrationRequest: new RegistrationRequest(query)
-      })
+      const command = {
+        registrationRequest: {
+          ...query,
+        } as RegistrationRequest,
+      } as ValidateRegistrationRequestQuery;
       return client.validateRegistrationRequest(command);
     },
   );
@@ -51,6 +53,6 @@ export default (): IUseRegistration => {
     loading: computed(() => loading.value),
     validateEmailLoading: computed(() => validateEmailLoading.value),
     register,
-    validateEmail
+    validateEmail,
   };
 };

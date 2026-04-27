@@ -1,5 +1,6 @@
 import * as locales from "./locales";
-import { i18n, useExtensionPoint } from "@vc-shell/framework";
+import { i18n } from "@vc-shell/framework";
+import { useExtensionPoint } from "@vc-shell/framework/extensions";
 import { Router } from "vue-router";
 import { App } from "vue";
 import { routes } from "./router";

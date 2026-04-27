@@ -28,7 +28,7 @@ async function startApp() {
       },
     })
     // VcmpVendorRegistration module initialization
-    .use(Registration.Registration.default, { router })
+    .use(Registration.Registration.default)
     .use(router);
 
   Object.entries(locales).forEach(([key, message]) => {
