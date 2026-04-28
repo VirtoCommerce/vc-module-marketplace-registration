@@ -30,13 +30,15 @@
             :error-message="errorMessage"
             :required="field.required"
             :loading="
-              (field.name === 'contactEmail' || field.name === 'organizationName') && validationLoading
+              (field.name === 'contactEmail' && isEmailValidating) ||
+              (field.name === 'organizationName' && isOrganizationValidating)
             "
             v-bind="field.props || {}"
             @update:model-value="
               (value: any) => {
                 handleChange(value);
                 updateFormData(field.name, value);
+                triggerServerValidation(field.name, value);
               }
             "
           />
@@ -48,7 +50,7 @@
           class="tw-w-full"
           type="submit"
           :loading="registrationLoading"
-          :disabled="registrationLoading || !isValid"
+          :disabled="registrationLoading || isServerValidating || !isValid"
           @click="onSubmit"
         >
           {{ $t("VCMP_VENDOR_REGISTRATION.SUBMIT") }}
@@ -72,6 +74,7 @@
 import { useSettings } from "@vc-shell/framework";
 import { Field, useForm, useIsFormValid, defineRule } from "vee-validate";
 import { computed, ref } from "vue";
+import { useDebounceFn } from "@vueuse/core";
 import { useRegistration, useRegistrationForm } from "../composables";
 import { CreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
@@ -86,11 +89,14 @@ const props = defineProps<Props>();
 
 const { uiSettings, loading: customizationLoading } = useSettings();
 
-const { validate } = useForm({
+const { validate, setFieldError, errorBag } = useForm({
   validateOnMount: false,
 });
 
 const isValid = useIsFormValid();
+const isEmailValidating = ref(false);
+const isOrganizationValidating = ref(false);
+const isServerValidating = computed(() => isEmailValidating.value || isOrganizationValidating.value);
 const registerResult = ref({
   isSuccess: false,
   error: "",
@@ -102,7 +108,6 @@ const {
   register,
   loading: registrationLoading,
   validateRegistrationRequest,
-  validationLoading,
 } = useRegistration();
 
 const { formConfig, formData, updateFormData, clearFormData } = useRegistrationForm();
@@ -121,57 +126,94 @@ defineRule("phone", (value: string) => {
   return true;
 });
 
-defineRule("emailWithServerValidation", async (value: string) => {
+defineRule("email", (value: string) => {
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   if (!value) {
-    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_REQUIRED");
+    return true;
   }
 
   if (!emailPattern.test(value)) {
     return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_INVALID");
   }
 
-  try {
-    const result = await validateRegistrationRequest(formData.value);
-
-    const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
-
-    if (
-      mailValidationError &&
-      (mailValidationError.errorCode === "SELLER_EMAIL_ALREADY_EXISTS" ||
-        mailValidationError.errorCode === "REQUEST_EMAIL_ALREADY_EXISTS")
-    ) {
-      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_ALREADY_EXISTS");
-    }
-  } catch (error) {
-    console.error("Email validation error:", error);
-    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR");
-  }
-
   return true;
 });
 
-defineRule("organizationNameWithServerValidation", async (value: string) => {
-  if (!value) {
-    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_REQUIRED");
-  }
+const validateContactEmail = (value: string, property: string) => {
+  isEmailValidating.value = true;
 
-  try {
-    const result = await validateRegistrationRequest(formData.value);
+  const debouncedValidation = useDebounceFn(async () => {
+    try {
+      const result = await validateRegistrationRequest({
+        ...formData.value,
+        contactEmail: value,
+      });
 
-    const nameValidationError = result.find((error) => error.propertyName === "Name");
+      const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
 
-    if (nameValidationError && nameValidationError.errorCode === "SELLER_NAME_ALREADY_EXISTS") {
-      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_ALREADY_EXISTS");
+      const serverErrors: string[] = [];
+      if (
+        mailValidationError &&
+        (mailValidationError.errorCode === "SELLER_EMAIL_ALREADY_EXISTS" ||
+          mailValidationError.errorCode === "REQUEST_EMAIL_ALREADY_EXISTS")
+      ) {
+        serverErrors.push(t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_ALREADY_EXISTS"));
+      }
+
+      const existing = errorBag.value[property] ?? [];
+      const merged = serverErrors.concat(existing).filter(Boolean);
+      setFieldError(property, merged.length ? merged.join("\n") : undefined);
+    } catch (error) {
+      console.error("Email validation error:", error);
+      setFieldError(property, t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR"));
+    } finally {
+      isEmailValidating.value = false;
     }
-  } catch (error) {
-    console.error("Organization name validation error:", error);
-    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_VALIDATION_ERROR");
-  }
+  }, 1000);
 
-  return true;
-});
+  debouncedValidation();
+};
+
+const validateOrganizationName = (value: string, property: string) => {
+  isOrganizationValidating.value = true;
+
+  const debouncedValidation = useDebounceFn(async () => {
+    try {
+      const result = await validateRegistrationRequest({
+        ...formData.value,
+        organizationName: value,
+      });
+
+      const nameValidationError = result.find((error) => error.propertyName === "Name");
+
+      const serverErrors: string[] = [];
+      if (nameValidationError && nameValidationError.errorCode === "SELLER_NAME_ALREADY_EXISTS") {
+        serverErrors.push(t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_ALREADY_EXISTS"));
+      }
+
+      const existing = errorBag.value[property] ?? [];
+      const merged = serverErrors.concat(existing).filter(Boolean);
+      setFieldError(property, merged.length ? merged.join("\n") : undefined);
+    } catch (error) {
+      console.error("Organization name validation error:", error);
+      setFieldError(property, t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_VALIDATION_ERROR"));
+    } finally {
+      isOrganizationValidating.value = false;
+    }
+  }, 1000);
+
+  debouncedValidation();
+};
+
+const triggerServerValidation = (fieldName: string, value: unknown) => {
+  const stringValue = typeof value === "string" ? value : value == null ? "" : String(value);
+  if (fieldName === "contactEmail") {
+    validateContactEmail(stringValue, fieldName);
+  } else if (fieldName === "organizationName") {
+    validateOrganizationName(stringValue, fieldName);
+  }
+};
 
 const onSubmit = async () => {
   const { valid } = await validate();

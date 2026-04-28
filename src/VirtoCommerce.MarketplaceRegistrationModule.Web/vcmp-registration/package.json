@@ -1,6 +1,6 @@
 {
   "name": "vcmp-registration",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "scripts": {
     "serve": "cross-env APP_ENV=development vite --force",
