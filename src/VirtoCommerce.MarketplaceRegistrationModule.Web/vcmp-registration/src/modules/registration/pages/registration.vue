@@ -38,7 +38,6 @@
               (value: any) => {
                 handleChange(value);
                 updateFormData(field.name, value);
-                triggerServerValidation(field.name, value);
               }
             "
           />
@@ -89,7 +88,7 @@ const props = defineProps<Props>();
 
 const { uiSettings, loading: customizationLoading } = useSettings();
 
-const { validate, setFieldError, errorBag } = useForm({
+const { validate } = useForm({
   validateOnMount: false,
 });
 
@@ -126,94 +125,77 @@ defineRule("phone", (value: string) => {
   return true;
 });
 
-defineRule("email", (value: string) => {
+const debouncedEmailValidator = useDebounceFn(async (value: string) => {
+  isEmailValidating.value = true;
+  try {
+    const result = await validateRegistrationRequest({
+      ...formData.value,
+      contactEmail: value,
+    });
+
+    const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
+
+    if (
+      mailValidationError &&
+      (mailValidationError.errorCode === "SELLER_EMAIL_ALREADY_EXISTS" ||
+        mailValidationError.errorCode === "REQUEST_EMAIL_ALREADY_EXISTS")
+    ) {
+      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_ALREADY_EXISTS");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Email validation error:", error);
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR");
+  } finally {
+    isEmailValidating.value = false;
+  }
+}, 1000);
+
+defineRule("emailWithServerValidation", (value: string) => {
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   if (!value) {
-    return true;
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_REQUIRED");
   }
 
   if (!emailPattern.test(value)) {
     return t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_INVALID");
   }
 
-  return true;
+  return debouncedEmailValidator(value);
 });
 
-const validateContactEmail = (value: string, property: string) => {
-  isEmailValidating.value = true;
-
-  const debouncedValidation = useDebounceFn(async () => {
-    try {
-      const result = await validateRegistrationRequest({
-        ...formData.value,
-        contactEmail: value,
-      });
-
-      const mailValidationError = result.find((error) => error.propertyName === "ContactEmail");
-
-      const serverErrors: string[] = [];
-      if (
-        mailValidationError &&
-        (mailValidationError.errorCode === "SELLER_EMAIL_ALREADY_EXISTS" ||
-          mailValidationError.errorCode === "REQUEST_EMAIL_ALREADY_EXISTS")
-      ) {
-        serverErrors.push(t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_ALREADY_EXISTS"));
-      }
-
-      const existing = errorBag.value[property] ?? [];
-      const merged = serverErrors.concat(existing).filter(Boolean);
-      setFieldError(property, merged.length ? merged.join("\n") : undefined);
-    } catch (error) {
-      console.error("Email validation error:", error);
-      setFieldError(property, t("VCMP_VENDOR_REGISTRATION.VALIDATION.EMAIL_VALIDATION_ERROR"));
-    } finally {
-      isEmailValidating.value = false;
-    }
-  }, 1000);
-
-  debouncedValidation();
-};
-
-const validateOrganizationName = (value: string, property: string) => {
+const debouncedOrganizationValidator = useDebounceFn(async (value: string) => {
   isOrganizationValidating.value = true;
+  try {
+    const result = await validateRegistrationRequest({
+      ...formData.value,
+      organizationName: value,
+    });
 
-  const debouncedValidation = useDebounceFn(async () => {
-    try {
-      const result = await validateRegistrationRequest({
-        ...formData.value,
-        organizationName: value,
-      });
+    const nameValidationError = result.find((error) => error.propertyName === "Name");
 
-      const nameValidationError = result.find((error) => error.propertyName === "Name");
-
-      const serverErrors: string[] = [];
-      if (nameValidationError && nameValidationError.errorCode === "SELLER_NAME_ALREADY_EXISTS") {
-        serverErrors.push(t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_ALREADY_EXISTS"));
-      }
-
-      const existing = errorBag.value[property] ?? [];
-      const merged = serverErrors.concat(existing).filter(Boolean);
-      setFieldError(property, merged.length ? merged.join("\n") : undefined);
-    } catch (error) {
-      console.error("Organization name validation error:", error);
-      setFieldError(property, t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_VALIDATION_ERROR"));
-    } finally {
-      isOrganizationValidating.value = false;
+    if (nameValidationError && nameValidationError.errorCode === "SELLER_NAME_ALREADY_EXISTS") {
+      return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_ALREADY_EXISTS");
     }
-  }, 1000);
 
-  debouncedValidation();
-};
-
-const triggerServerValidation = (fieldName: string, value: unknown) => {
-  const stringValue = typeof value === "string" ? value : value == null ? "" : String(value);
-  if (fieldName === "contactEmail") {
-    validateContactEmail(stringValue, fieldName);
-  } else if (fieldName === "organizationName") {
-    validateOrganizationName(stringValue, fieldName);
+    return true;
+  } catch (error) {
+    console.error("Organization name validation error:", error);
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_VALIDATION_ERROR");
+  } finally {
+    isOrganizationValidating.value = false;
   }
-};
+}, 1000);
+
+defineRule("organizationNameWithServerValidation", (value: string) => {
+  if (!value) {
+    return t("VCMP_VENDOR_REGISTRATION.VALIDATION.ORGANIZATION_REQUIRED");
+  }
+
+  return debouncedOrganizationValidator(value);
+});
 
 const onSubmit = async () => {
   const { valid } = await validate();

@@ -42,7 +42,7 @@ const defaultFields: IFormField[] = [
     label: "VCMP_VENDOR_REGISTRATION.LABELS.ORGANIZATION",
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.ORGANIZATION",
     required: true,
-    rules: "required",
+    rules: "organizationNameWithServerValidation",
     priority: 30,
   },
   {
@@ -53,7 +53,7 @@ const defaultFields: IFormField[] = [
     placeholder: "VCMP_VENDOR_REGISTRATION.PLACEHOLDERS.EMAIL",
     hint: "VCMP_VENDOR_REGISTRATION.HINTS.EMAIL",
     required: true,
-    rules: "required|email",
+    rules: "emailWithServerValidation",
     priority: 40,
   },
   {
