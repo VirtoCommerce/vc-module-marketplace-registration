@@ -1,6 +1,7 @@
 {
   "VCMP_VENDOR_REGISTRATION": {
     "TITLE": "Vendor Registration",
+    "BACK_TO_LOGIN": "Back to sign in",
     "LABELS": {
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",

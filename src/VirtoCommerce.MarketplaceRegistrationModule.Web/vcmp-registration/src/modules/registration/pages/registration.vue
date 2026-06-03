@@ -56,6 +56,18 @@
         </VcButton>
       </div>
 
+      <div class="tw-text-center">
+        <VcButton
+          variant="link"
+          icon="lucide-arrow-left"
+          icon-size="xs"
+          type="button"
+          @click="goBack"
+        >
+          {{ t("VCMP_VENDOR_REGISTRATION.BACK_TO_LOGIN") }}
+        </VcButton>
+      </div>
+
       <VcHint
         v-if="!!registerResult.error"
         class="registration-form__error"
@@ -78,6 +90,7 @@ import { useRegistration, useRegistrationForm } from "../composables";
 import { CreateRegistrationRequestCommand } from "@vcmp-registration/api/marketplaceregistration";
 import { useI18n } from "vue-i18n";
 import { VcAuthLayout, VcButton, VcForm, VcHint } from "@vc-shell/framework/ui";
+import { useRouter } from "vue-router";
 
 export interface Props {
   logo: string;
@@ -103,13 +116,10 @@ const registerResult = ref({
 
 const { t } = useI18n({ useScope: "global" });
 
-const {
-  register,
-  loading: registrationLoading,
-  validateRegistrationRequest,
-} = useRegistration();
+const { register, loading: registrationLoading, validateRegistrationRequest } = useRegistration();
 
 const { formConfig, formData, updateFormData, clearFormData } = useRegistrationForm();
+const router = useRouter();
 
 defineRule("phone", (value: string) => {
   const phonePattern = /^\+?[0-9]\d{1,14}$/;
@@ -228,6 +238,10 @@ const customization = computed(() => {
     background: props.background,
   };
 });
+
+const goBack = () => {
+  router.push({ name: "Login" });
+};
 </script>
 
 <style lang="scss">

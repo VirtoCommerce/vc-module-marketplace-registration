@@ -2,7 +2,6 @@ import { RouteRecordRaw } from "vue-router";
 import Registration from "../pages/registration.vue";
 import DemoRegistration from "../pages/demo.vue";
 import whiteLogoImage from "../../../../public/assets/logo-white.svg";
-import bgImage from "../../../../public/assets/background.jpg";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -11,7 +10,6 @@ export const routes: RouteRecordRaw[] = [
     component: Registration,
     props: () => ({
       logo: whiteLogoImage,
-      // background: bgImage,
     }),
   },
   {
