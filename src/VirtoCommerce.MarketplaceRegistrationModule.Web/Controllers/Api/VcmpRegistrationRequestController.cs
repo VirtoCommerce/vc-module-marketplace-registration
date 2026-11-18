@@ -36,6 +36,20 @@ public class VcmpRegistrationRequestController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    [Route("{id}")]
+    [Authorize(Core.ModuleConstants.Security.Permissions.Read)]
+    public async Task<ActionResult<RegistrationRequest>> GetById([FromRoute] string id)
+    {
+        // Bound by the route's own name: a model-bound "Id" makes Swagger declare a path parameter
+        // the "{id}" template doesn't have, so generated clients never substitute it
+        var query = ExType<GetRegistrationRequestByIdQuery>.New();
+        query.Id = id;
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
+    }
+
     [HttpPost]
     [Route("validate")]
     public async Task<ActionResult<ValidationFailure[]>> ValidateRegistrationRequest([FromBody] ValidateRegistrationRequestQuery query)

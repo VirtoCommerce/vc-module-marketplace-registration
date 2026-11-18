@@ -1,0 +1,17 @@
+{
+  "remote": { "name": "marketplace_registration_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "marketplace-registration-requests",
+        "sectionId": "marketplace",
+        "title": "Registration requests",
+        "titleKey": "MARKETPLACE_REGISTRATION.MENU.TITLE",
+        "icon": "lucide-id-card",
+        "route": "/registration-requests",
+        "permission": "seller:registration:read",
+        "priority": 900
+      }
+    ]
+  }
+}

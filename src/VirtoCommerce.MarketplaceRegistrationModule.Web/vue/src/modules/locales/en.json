@@ -1,0 +1,46 @@
+{
+  "MARKETPLACE_REGISTRATION": {
+    "MENU": {
+      "TITLE": "Registration requests"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "NEW_REQUEST": "New request"
+    },
+    "LIST": {
+      "TITLE": "Registration requests",
+      "EMPTY": "No registration requests yet",
+      "NOT_FOUND": "No registration requests match the search",
+      "STATUSES_PLACEHOLDER": "All statuses",
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "ORGANIZATION_NAME": "Organization",
+      "CONTACT_EMAIL": "Email",
+      "CONTACT_PHONE": "Phone",
+      "STATUS": "Status"
+    },
+    "DETAILS": {
+      "TITLE": "Registration request",
+      "STATUS": "Status",
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "ORGANIZATION_NAME": "Organization",
+      "CONTACT_EMAIL": "Email",
+      "CONTACT_PHONE": "Phone",
+      "DECLINE_REASON": "Decline reason",
+      "OPEN_VENDOR_DETAILS": "Open vendor details",
+      "VENDOR_NOT_FOUND": "No vendor named \"{name}\" was found."
+    },
+    "DECLINE": {
+      "TITLE": "Decline confirmation",
+      "MESSAGE": "Are you sure you want to decline the registration request?",
+      "LABEL": "Decline reason",
+      "PLACEHOLDER": "Enter decline reason",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel"
+    },
+    "NOTIFICATION": {
+      "OPEN": "Open request"
+    }
+  }
+}
