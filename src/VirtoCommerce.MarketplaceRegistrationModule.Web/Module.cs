@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
 using VirtoCommerce.StateMachineModule.Core.Events;
+using VirtoCommerce.StateMachineModule.Core.Services;
 
 namespace VirtoCommerce.MarketplaceRegistrationModule.Web;
 
@@ -86,6 +88,8 @@ public class Module : IModule, IHasConfiguration, IExportSupport, IImportSupport
         var settingsRegistrar = serviceProvider.GetRequiredService<ISettingsRegistrar>();
         settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
+        StateMachineEntityTypes.Register(serviceProvider.GetRequiredService<IStateMachineEntityTypeRegistrar>());
+
         //Register module authorization
         appBuilder.UseModuleAuthorization();
 
@@ -101,14 +105,14 @@ public class Module : IModule, IHasConfiguration, IExportSupport, IImportSupport
     }
 
     public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         return _appBuilder.ApplicationServices.GetRequiredService<RegistrationExportImport>().DoExportAsync(outStream, options,
             progressCallback, cancellationToken);
     }
 
     public Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         return _appBuilder.ApplicationServices.GetRequiredService<RegistrationExportImport>().DoImportAsync(inputStream, options,
             progressCallback, cancellationToken);
